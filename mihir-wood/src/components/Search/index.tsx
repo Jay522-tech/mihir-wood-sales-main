@@ -1,0 +1,49 @@
+'use client'
+
+import { cn } from '@/utilities/cn'
+import { createUrl } from '@/utilities/createUrl'
+import { SearchIcon } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import React from 'react'
+
+type Props = {
+  className?: string
+}
+
+export const Search: React.FC<Props> = ({ className }) => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+
+    const val = e.target as HTMLFormElement
+    const search = val.search as HTMLInputElement
+    const newParams = new URLSearchParams(searchParams.toString())
+
+    if (search.value) {
+      newParams.set('q', search.value)
+    } else {
+      newParams.delete('q')
+    }
+
+    router.push(createUrl('/shop', newParams))
+  }
+
+  return (
+    <form className={cn('relative w-full', className)} onSubmit={onSubmit}>
+      <input
+        autoComplete="off"
+        className="w-full rounded-2xl border border-gray-200 bg-white px-6 py-4 text-sm font-bold text-gray-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#D4BC9B] transition-all shadow-sm"
+        defaultValue={searchParams?.get('q') || ''}
+        key={searchParams?.get('q')}
+        name="search"
+        placeholder="Search for products..."
+        type="text"
+      />
+      <div className="absolute right-0 top-0 mr-4 flex h-full items-center">
+        <SearchIcon className="h-5 w-5 text-[#D4BC9B]" />
+      </div>
+    </form>
+  )
+}
