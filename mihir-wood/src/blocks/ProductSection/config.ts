@@ -18,8 +18,8 @@ export const ProductSection: Block = {
             type: 'select',
             defaultValue: 'grid',
             options: [
-                { label: 'Grid (Best Sellers)', value: 'grid' },
-                { label: 'Carousel (New Arrivals)', value: 'carousel' },
+                { label: 'Grid', value: 'grid' },
+                { label: 'Carousel', value: 'carousel' },
             ],
             required: true,
         },
@@ -30,6 +30,7 @@ export const ProductSection: Block = {
             options: [
                 { label: 'Collection', value: 'collection' },
                 { label: 'Individual Selection', value: 'selection' },
+                { label: 'New Arrival', value: 'newArrival' },
             ],
         },
         {
@@ -45,7 +46,7 @@ export const ProductSection: Block = {
             name: 'limit',
             type: 'number',
             admin: {
-                condition: (_: any, siblingData: any) => siblingData.populateBy === 'collection',
+                condition: (_: any, siblingData: any) => ['collection', 'newArrival'].includes(siblingData.populateBy),
             },
             defaultValue: 8,
         },

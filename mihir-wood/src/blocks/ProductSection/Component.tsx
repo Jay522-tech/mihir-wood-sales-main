@@ -26,6 +26,14 @@ export const ProductSection: React.FC<ProductSectionBlock> = async (props) => {
             } : {})
         })
         products = fetchedProducts.docs
+    } else if (populateBy === 'newArrival') {
+        const fetchedProducts = await payload.find({
+            collection: 'products',
+            depth: 1,
+            limit: limit || 8,
+            sort: '-createdAt',
+        })
+        products = fetchedProducts.docs
     } else {
         products = (selectedProducts?.map((item) => (typeof item === 'object' ? item : null)).filter(Boolean) as Product[]) || []
     }

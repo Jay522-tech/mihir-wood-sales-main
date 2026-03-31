@@ -137,10 +137,16 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    shop: Shop;
+    'bulk-order': BulkOrder;
+    'home-hero': HomeHero;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    shop: ShopSelect<false> | ShopSelect<true>;
+    'bulk-order': BulkOrderSelect<false> | BulkOrderSelect<true>;
+    'home-hero': HomeHeroSelect<false> | HomeHeroSelect<true>;
   };
   locale: null;
   widgets: {
@@ -309,6 +315,52 @@ export interface Product {
   isBestSeller?: boolean | null;
   relatedProducts?: (string | Product)[] | null;
   warranty?: string | null;
+  /**
+   * A brief, italicized description shown right under the price.
+   */
+  shortDescription?: string | null;
+  /**
+   * Bullet points shown in the Product Story section.
+   */
+  storyBullets?:
+    | {
+        bullet: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Key-value pairs for the specifications table.
+   */
+  specifications?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Icons and text shown in the Exquisite Materials section.
+   */
+  materials?:
+    | {
+        icon: 'Trophy' | 'CheckCircle2' | 'ShieldCheck' | 'Star';
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Numbers and labels shown in the Terms & Conditions section.
+   */
+  trustStats?:
+    | {
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  rating?: number | null;
+  reviewCount?: number | null;
   visitCount?: number | null;
   meta?: {
     title?: string | null;
@@ -621,15 +673,21 @@ export interface Page {
     | ThreeItemGridBlock
     | BannerBlock
     | FormBlock
-    | CategoryGridBlock
     | ReviewsBlock
     | BlogArchiveBlock
     | StoreArchiveBlock
     | CategoryCirclesBlock
     | CustomFurnitureBlock
-    | ManufacturingProcessBlock
     | TrustStatsBlock
+    | ManufacturingProcessBlock
     | InquirySectionBlock
+    | BulkOrderBannerBlock
+    | ProductSectionBlock
+    | ReviewsSectionBlock
+    | AsymmetricalContentBlock
+    | FeatureGridBlock
+    | ProjectShowcaseBlock
+    | ProjectProcessBlock
   )[];
   meta?: {
     title?: string | null;
@@ -689,6 +747,7 @@ export interface ArchiveBlock {
 export interface Category {
   id: string;
   title: string;
+  subtitle?: string | null;
   parent?: (string | null) | Category;
   image?: (string | null) | Media;
   /**
@@ -976,17 +1035,6 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CategoryGridBlock".
- */
-export interface CategoryGridBlock {
-  title?: string | null;
-  categories: (string | Category)[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'categoryGrid';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ReviewsBlock".
  */
 export interface ReviewsBlock {
@@ -1005,12 +1053,14 @@ export interface Review {
   id: string;
   product: string | Product;
   customerName: string;
+  location?: string | null;
   rating: number;
   content: string;
   images?: (string | Media)[] | null;
   video?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1091,15 +1141,8 @@ export interface Store {
  * via the `definition` "CategoryCirclesBlock".
  */
 export interface CategoryCirclesBlock {
-  title: string;
-  categories?:
-    | {
-        label: string;
-        image: string | Media;
-        slug: string;
-        id?: string | null;
-      }[]
-    | null;
+  title?: string | null;
+  selectedCategories?: (string | Category)[] | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'categoryCircles';
@@ -1109,22 +1152,17 @@ export interface CategoryCirclesBlock {
  * via the `definition` "CustomFurnitureBlock".
  */
 export interface CustomFurnitureBlock {
-  title: string;
-  mainImage: string | Media;
+  title?: string | null;
+  mainImage?: (string | null) | Media;
   samples?:
     | {
         image: string | Media;
         id?: string | null;
       }[]
     | null;
-  formTitle: string;
-  formSubtitle: string;
-  categories?:
-    | {
-        label: string;
-        id?: string | null;
-      }[]
-    | null;
+  formTitle?: string | null;
+  formSubtitle?: string | null;
+  categories?: (string | Category)[] | null;
   styles?:
     | {
         label: string;
@@ -1137,27 +1175,9 @@ export interface CustomFurnitureBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ManufacturingProcessBlock".
- */
-export interface ManufacturingProcessBlock {
-  title: string;
-  steps?:
-    | {
-        title: string;
-        icon: 'search' | 'wrench' | 'shield' | 'package';
-        id?: string | null;
-      }[]
-    | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'manufacturingProcess';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TrustStatsBlock".
  */
 export interface TrustStatsBlock {
-  title: string;
   stats?:
     | {
         value: string;
@@ -1171,20 +1191,228 @@ export interface TrustStatsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ManufacturingProcessBlock".
+ */
+export interface ManufacturingProcessBlock {
+  title?: string | null;
+  subtitle?: string | null;
+  steps?:
+    | {
+        title: string;
+        description?: string | null;
+        icon?: ('trees' | 'pentool' | 'hammer' | 'truck') | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'manufacturingProcess';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "InquirySectionBlock".
  */
 export interface InquirySectionBlock {
-  title: string;
-  backgroundImage: string | Media;
-  testimonial: {
-    name: string;
-    role: string;
-    avatar: string | Media;
-    content: string;
-  };
+  title?: string | null;
+  /**
+   * Select the layout style for the inquiry form.
+   */
+  variant?: ('default' | 'simple') | null;
+  description?: string | null;
+  image?: (string | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'inquirySection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BulkOrderBannerBlock".
+ */
+export interface BulkOrderBannerBlock {
+  title?: string | null;
+  highlightText?: string | null;
+  description?: string | null;
+  image: string | Media;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: string | Page;
+          } | null;
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bulkOrderBanner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductSectionBlock".
+ */
+export interface ProductSectionBlock {
+  title?: string | null;
+  subtitle?: string | null;
+  layout: 'grid' | 'carousel';
+  populateBy?: ('collection' | 'selection' | 'newArrival') | null;
+  categories?: (string | Category)[] | null;
+  limit?: number | null;
+  selectedProducts?: (string | Product)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'productSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReviewsSectionBlock".
+ */
+export interface ReviewsSectionBlock {
+  title?: string | null;
+  subtitle?: string | null;
+  populateBy?: ('collection' | 'selection') | null;
+  limit?: number | null;
+  selectedReviews?: (string | Review)[] | null;
+  showExploreButton?: boolean | null;
+  exploreLink?: string | null;
+  trustedByText?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'reviewsSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AsymmetricalContentBlock".
+ */
+export interface AsymmetricalContentBlock {
+  layout: 'imageLeft' | 'imageRight';
+  title: string;
+  badge?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  mainImage: string | Media;
+  secondaryImage?: (string | null) | Media;
+  enableLink?: boolean | null;
+  link?: {
+    type?: ('reference' | 'custom') | null;
+    newTab?: boolean | null;
+    reference?: {
+      relationTo: 'pages';
+      value: string | Page;
+    } | null;
+    url?: string | null;
+    label: string;
+    /**
+     * Choose how the link should be rendered.
+     */
+    appearance?: ('default' | 'outline') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'asymmetricalContent';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGridBlock".
+ */
+export interface FeatureGridBlock {
+  title?: string | null;
+  subtitle?: string | null;
+  features?:
+    | {
+        icon?:
+          | (
+              | 'shield'
+              | 'award'
+              | 'star'
+              | 'check'
+              | 'globe'
+              | 'bed'
+              | 'briefcase'
+              | 'utensils'
+              | 'home'
+              | 'pentool'
+              | 'dollar'
+              | 'hammer'
+              | 'clock'
+            )
+          | null;
+        title?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  variant?: ('default' | 'cards' | 'whyChooseUs') | null;
+  isDark?: boolean | null;
+  image?: (string | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectShowcaseBlock".
+ */
+export interface ProjectShowcaseBlock {
+  title?: string | null;
+  subtitle?: string | null;
+  layout?: ('grid' | 'slider') | null;
+  projects?:
+    | {
+        title?: string | null;
+        location?: string | null;
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'projectShowcase';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectProcessBlock".
+ */
+export interface ProjectProcessBlock {
+  title?: string | null;
+  /**
+   * Select the layout style for the process steps.
+   */
+  variant?: ('default' | 'grid') | null;
+  subtitle?: string | null;
+  steps?:
+    | {
+        title: string;
+        description: string;
+        image: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'projectProcess';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1590,15 +1818,21 @@ export interface PagesSelect<T extends boolean = true> {
         threeItemGrid?: T | ThreeItemGridBlockSelect<T>;
         banner?: T | BannerBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
-        categoryGrid?: T | CategoryGridBlockSelect<T>;
         reviews?: T | ReviewsBlockSelect<T>;
         blogArchive?: T | BlogArchiveBlockSelect<T>;
         storeArchive?: T | StoreArchiveBlockSelect<T>;
         categoryCircles?: T | CategoryCirclesBlockSelect<T>;
         customFurniture?: T | CustomFurnitureBlockSelect<T>;
-        manufacturingProcess?: T | ManufacturingProcessBlockSelect<T>;
         trustStats?: T | TrustStatsBlockSelect<T>;
+        manufacturingProcess?: T | ManufacturingProcessBlockSelect<T>;
         inquirySection?: T | InquirySectionBlockSelect<T>;
+        bulkOrderBanner?: T | BulkOrderBannerBlockSelect<T>;
+        productSection?: T | ProductSectionBlockSelect<T>;
+        reviewsSection?: T | ReviewsSectionBlockSelect<T>;
+        asymmetricalContent?: T | AsymmetricalContentBlockSelect<T>;
+        featureGrid?: T | FeatureGridBlockSelect<T>;
+        projectShowcase?: T | ProjectShowcaseBlockSelect<T>;
+        projectProcess?: T | ProjectProcessBlockSelect<T>;
       };
   meta?:
     | T
@@ -1733,16 +1967,6 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CategoryGridBlock_select".
- */
-export interface CategoryGridBlockSelect<T extends boolean = true> {
-  title?: T;
-  categories?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ReviewsBlock_select".
  */
 export interface ReviewsBlockSelect<T extends boolean = true> {
@@ -1780,14 +2004,7 @@ export interface StoreArchiveBlockSelect<T extends boolean = true> {
  */
 export interface CategoryCirclesBlockSelect<T extends boolean = true> {
   title?: T;
-  categories?:
-    | T
-    | {
-        label?: T;
-        image?: T;
-        slug?: T;
-        id?: T;
-      };
+  selectedCategories?: T;
   id?: T;
   blockName?: T;
 }
@@ -1806,12 +2023,7 @@ export interface CustomFurnitureBlockSelect<T extends boolean = true> {
       };
   formTitle?: T;
   formSubtitle?: T;
-  categories?:
-    | T
-    | {
-        label?: T;
-        id?: T;
-      };
+  categories?: T;
   styles?:
     | T
     | {
@@ -1823,26 +2035,9 @@ export interface CustomFurnitureBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ManufacturingProcessBlock_select".
- */
-export interface ManufacturingProcessBlockSelect<T extends boolean = true> {
-  title?: T;
-  steps?:
-    | T
-    | {
-        title?: T;
-        icon?: T;
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TrustStatsBlock_select".
  */
 export interface TrustStatsBlockSelect<T extends boolean = true> {
-  title?: T;
   stats?:
     | T
     | {
@@ -1855,18 +2050,172 @@ export interface TrustStatsBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ManufacturingProcessBlock_select".
+ */
+export interface ManufacturingProcessBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "InquirySectionBlock_select".
  */
 export interface InquirySectionBlockSelect<T extends boolean = true> {
   title?: T;
-  backgroundImage?: T;
-  testimonial?:
+  variant?: T;
+  description?: T;
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BulkOrderBannerBlock_select".
+ */
+export interface BulkOrderBannerBlockSelect<T extends boolean = true> {
+  title?: T;
+  highlightText?: T;
+  description?: T;
+  image?: T;
+  links?:
     | T
     | {
-        name?: T;
-        role?: T;
-        avatar?: T;
-        content?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProductSectionBlock_select".
+ */
+export interface ProductSectionBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  layout?: T;
+  populateBy?: T;
+  categories?: T;
+  limit?: T;
+  selectedProducts?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReviewsSectionBlock_select".
+ */
+export interface ReviewsSectionBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  populateBy?: T;
+  limit?: T;
+  selectedReviews?: T;
+  showExploreButton?: T;
+  exploreLink?: T;
+  trustedByText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AsymmetricalContentBlock_select".
+ */
+export interface AsymmetricalContentBlockSelect<T extends boolean = true> {
+  layout?: T;
+  title?: T;
+  badge?: T;
+  description?: T;
+  mainImage?: T;
+  secondaryImage?: T;
+  enableLink?: T;
+  link?:
+    | T
+    | {
+        type?: T;
+        newTab?: T;
+        reference?: T;
+        url?: T;
+        label?: T;
+        appearance?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGridBlock_select".
+ */
+export interface FeatureGridBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  features?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  variant?: T;
+  isDark?: T;
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectShowcaseBlock_select".
+ */
+export interface ProjectShowcaseBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  layout?: T;
+  projects?:
+    | T
+    | {
+        title?: T;
+        location?: T;
+        image?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProjectProcessBlock_select".
+ */
+export interface ProjectProcessBlockSelect<T extends boolean = true> {
+  title?: T;
+  variant?: T;
+  subtitle?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        id?: T;
       };
   id?: T;
   blockName?: T;
@@ -1877,6 +2226,7 @@ export interface InquirySectionBlockSelect<T extends boolean = true> {
  */
 export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
+  subtitle?: T;
   parent?: T;
   image?: T;
   generateSlug?: T;
@@ -1918,12 +2268,14 @@ export interface MediaSelect<T extends boolean = true> {
 export interface ReviewsSelect<T extends boolean = true> {
   product?: T;
   customerName?: T;
+  location?: T;
   rating?: T;
   content?: T;
   images?: T;
   video?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2199,6 +2551,37 @@ export interface ProductsSelect<T extends boolean = true> {
   isBestSeller?: T;
   relatedProducts?: T;
   warranty?: T;
+  shortDescription?: T;
+  storyBullets?:
+    | T
+    | {
+        bullet?: T;
+        id?: T;
+      };
+  specifications?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  materials?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  trustStats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  rating?: T;
+  reviewCount?: T;
   visitCount?: T;
   meta?:
     | T
@@ -2366,6 +2749,10 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: string;
+  /**
+   * Text to display in the top announcement bar
+   */
+  promotionText?: string | null;
   navItems?:
     | {
         link: {
@@ -2390,7 +2777,69 @@ export interface Header {
  */
 export interface Footer {
   id: string;
-  navItems?:
+  logoText?: string | null;
+  tagline?: string | null;
+  socialLinks?:
+    | {
+        icon?: ('facebook' | 'instagram' | 'twitter' | 'youtube') | null;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  linkGroups?:
+    | {
+        title: string;
+        links?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?: {
+                  relationTo: 'pages';
+                  value: string | Page;
+                } | null;
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  contactInfo?: {
+    phone?: string | null;
+    website?: string | null;
+  };
+  copyrightText?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shop".
+ */
+export interface Shop {
+  id: string;
+  banner: {
+    title: string;
+    subtitle?: string | null;
+    image?: (string | null) | Media;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bulk-order".
+ */
+export interface BulkOrder {
+  id: string;
+  title?: string | null;
+  highlightText?: string | null;
+  description?: string | null;
+  image: string | Media;
+  links?:
     | {
         link: {
           type?: ('reference' | 'custom') | null;
@@ -2401,6 +2850,31 @@ export interface Footer {
           } | null;
           url?: string | null;
           label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-hero".
+ */
+export interface HomeHero {
+  id: string;
+  title?: string | null;
+  subTitle?: string | null;
+  image: string | Media;
+  links?:
+    | {
+        link: {
+          label: string;
+          url: string;
         };
         id?: string | null;
       }[]
@@ -2413,6 +2887,7 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  promotionText?: T;
   navItems?:
     | T
     | {
@@ -2436,7 +2911,72 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  logoText?: T;
+  tagline?: T;
+  socialLinks?:
+    | T
+    | {
+        icon?: T;
+        url?: T;
+        id?: T;
+      };
+  linkGroups?:
+    | T
+    | {
+        title?: T;
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  contactInfo?:
+    | T
+    | {
+        phone?: T;
+        website?: T;
+      };
+  copyrightText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shop_select".
+ */
+export interface ShopSelect<T extends boolean = true> {
+  banner?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bulk-order_select".
+ */
+export interface BulkOrderSelect<T extends boolean = true> {
+  title?: T;
+  highlightText?: T;
+  description?: T;
+  image?: T;
+  links?:
     | T
     | {
         link?:
@@ -2447,6 +2987,30 @@ export interface FooterSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-hero_select".
+ */
+export interface HomeHeroSelect<T extends boolean = true> {
+  title?: T;
+  subTitle?: T;
+  image?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              label?: T;
+              url?: T;
             };
         id?: T;
       };

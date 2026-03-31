@@ -31,7 +31,7 @@ export const ManufacturingProcess: Block = {
                 {
                     name: 'description',
                     type: 'textarea',
-                    required: true,
+                    required: false,
                     label: 'Step Description',
                 },
                 {

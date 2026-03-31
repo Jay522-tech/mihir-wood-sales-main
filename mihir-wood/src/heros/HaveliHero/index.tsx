@@ -1,52 +1,46 @@
-import { Button } from '@/components/ui/button'
-import Image from 'next/image'
-import React from 'react'
+'use client'
+import { useHeaderTheme } from '@/providers/HeaderTheme'
+import React, { useEffect } from 'react'
 
-export const HaveliHero: React.FC = () => {
+import type { Page } from '@/payload-types'
+
+import { CMSLink } from '@/components/Link'
+import { Media } from '@/components/Media'
+import { RichText } from '@/components/RichText'
+
+export const HaveliHero: React.FC<Page['hero']> = ({ links, media, richText, subTitle }) => {
+    const { setHeaderTheme } = useHeaderTheme()
+
+    useEffect(() => {
+        setHeaderTheme('dark')
+    })
+
     return (
-        <div className="relative w-full h-[70vh] overflow-hidden flex items-center">
-            {/* Background Image with Overlay */}
-            <div className="absolute inset-0 z-0">
-                <Image
-                    src="/images/haveli-hero-bg.png"
-                    alt="Haveli Luxurious Living Room"
-                    fill
-                    className="object-cover"
-                    priority
-                />
-                <div className="absolute inset-0 bg-black/30" />
-            </div>
-
-            {/* Content */}
-            <div className="container relative z-10 px-4 md:px-8">
-                <div className="max-w-3xl space-y-6">
-                    <div className="space-y-2">
-                        <span className="text-white/90 text-xs md:text-sm font-bold uppercase tracking-[0.3em] block">
-                            EMBRACE TIMELESS ELEGANCE.
-                        </span>
-                        <h1 className="text-white text-5xl md:text-7xl font-bold leading-[1.1] tracking-tight">
-                            Crafted Traditions for <br /> Modern Homes.
-                        </h1>
-                    </div>
-
-                    <p className="text-white/80 text-lg md:text-xl font-medium max-w-xl">
-                        Explore Haveli collection and Bespoke services.
-                    </p>
-
-                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                        <Button
-                            className="bg-[#D4BC9B] hover:bg-[#C2AA8A] text-black font-bold h-14 px-8 rounded-none transition-all"
-                        >
-                            Explore Haveli Collection
-                        </Button>
-                        <Button
-                            variant="outline"
-                            className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-bold h-14 px-8 rounded-none transition-all"
-                        >
-                            Request Bespoke Pricing
-                        </Button>
-                    </div>
+        <div
+            className="relative flex items-center justify-center text-white"
+            data-theme="dark"
+        >
+            <div className="container mb-8 z-10 relative flex flex-col justify-center">
+                <div className="max-w-[45rem]">
+                    {subTitle && <p className="mb-4 text-sm font-bold uppercase tracking-widest">{subTitle}</p>}
+                    {richText && <RichText className="mb-6" data={richText} enableGutter={false} />}
+                    {Array.isArray(links) && links.length > 0 && (
+                        <ul className="flex gap-4">
+                            {links.map(({ link }, i) => {
+                                return (
+                                    <li key={i}>
+                                        <CMSLink {...link} />
+                                    </li>
+                                )
+                            })}
+                        </ul>
+                    )}
                 </div>
+            </div>
+            <div className="min-h-[70vh] select-none">
+                {media && typeof media === 'object' && (
+                    <Media fill imgClassName="-z-10 object-cover" priority resource={media} />
+                )}
             </div>
         </div>
     )

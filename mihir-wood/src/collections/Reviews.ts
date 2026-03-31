@@ -12,7 +12,7 @@ export const Reviews: CollectionConfig = {
     },
     admin: {
         useAsTitle: 'customerName',
-        defaultColumns: ['customerName', 'rating', 'updatedAt'],
+        defaultColumns: ['customerName', 'location', 'rating', 'updatedAt'],
         group: 'Content',
     },
     fields: [
@@ -26,9 +26,22 @@ export const Reviews: CollectionConfig = {
             },
         },
         {
-            name: 'customerName',
-            type: 'text',
-            required: true,
+            type: 'row',
+            fields: [
+                {
+                    name: 'customerName',
+                    type: 'text',
+                    required: true,
+                },
+                {
+                    name: 'location',
+                    type: 'text',
+                    label: 'Customer Location',
+                    admin: {
+                        placeholder: 'e.g. Mumbai, India',
+                    },
+                },
+            ],
         },
         {
             name: 'rating',
@@ -58,4 +71,7 @@ export const Reviews: CollectionConfig = {
             relationTo: 'media',
         },
     ],
+    versions: {
+        drafts: true,
+    },
 }

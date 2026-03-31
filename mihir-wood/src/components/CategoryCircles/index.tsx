@@ -19,14 +19,14 @@ export const CategoryCircles: React.FC = () => {
                     Product Categories
                 </h2>
 
-                <div className="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-6 md:gap-10 overflow-x-auto pb-4 md:pb-0 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+                <div className="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-6 md:gap-10 overflow-x-auto pt-4 pb-4 md:pb-4 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
                     {categories.map((category) => (
                         <Link
                             key={category.label}
                             href={`/products?category=${category.slug}`}
-                            className="flex flex-col items-center gap-4 group min-w-[100px] md:min-w-[120px] transition-transform hover:-translate-y-1 hover:cursor-pointer"
+                            className="flex flex-col items-center gap-4 group min-w-[110px] md:min-w-[160px] transition-transform hover:-translate-y-1 hover:cursor-pointer"
                         >
-                            <div className="relative w-20 h-20 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-transparent group-hover:border-[#D4BC9B] transition-all shadow-sm">
+                            <div className="relative w-24 h-24 md:w-40 md:h-40 rounded-full overflow-hidden border-2 border-transparent group-hover:border-[#D4BC9B] transition-all shadow-sm">
                                 <Image
                                     src={category.image}
                                     alt={category.label}

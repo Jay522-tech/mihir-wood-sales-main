@@ -52,8 +52,9 @@ export const ProductSectionClient: React.FC<ProductSectionClientProps> = ({
     }
 
     const renderProductCard = (product: Product, isCarousel = false) => {
-        const image = typeof product.image === 'object' ? (product.image as Media) : null
-        const price = typeof product.price === 'number' ? `₹${product.price.toLocaleString()}` : 'Price on Request'
+        const image = (product.meta?.image || (product as any).image) as Media
+        const priceVal = product.priceInINR || (product as any).price
+        const price = typeof priceVal === 'number' ? `₹${priceVal.toLocaleString()}` : 'Price on Request'
 
         return (
             <Link
@@ -83,14 +84,14 @@ export const ProductSectionClient: React.FC<ProductSectionClientProps> = ({
 
                 <div className={cn("flex flex-col gap-1 w-full", isCarousel ? "items-center" : "")}>
                     <h3 className={cn(
-                        "font-black text-gray-900 uppercase tracking-tight italic",
-                        isCarousel ? "text-base md:text-lg" : "text-sm md:text-base leading-tight"
+                        "font-black text-gray-900 uppercase tracking-tighter italic",
+                        isCarousel ? "text-xl md:text-2xl" : "text-sm md:text-base leading-tight"
                     )}>
                         {product.title}
                     </h3>
 
                     <div className={cn("flex items-center mt-1 w-full", isCarousel ? "justify-center" : "justify-between")}>
-                        <p className="text-sm md:text-base font-bold text-[#D4BC9B]">
+                        <p className="text-base font-bold text-[#D4BC9B] tracking-wide">
                             {price}
                         </p>
                         {!isCarousel && (
@@ -111,7 +112,7 @@ export const ProductSectionClient: React.FC<ProductSectionClientProps> = ({
         <section className="bg-[#F9F7F2] py-16 md:py-24">
             <div className="container px-4">
                 {(title || subtitle) && (
-                    <div className="max-w-4xl mx-auto text-center mb-12 flex flex-col items-center gap-4">
+                    <div className="max-w-5xl mx-auto text-center mb-12 flex flex-col items-center gap-4">
                         {subtitle && (
                             <div className="inline-block px-4 py-1 bg-[#D4BC9B]/10 border border-[#D4BC9B]/20 rounded-full">
                                 <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#D4BC9B]">
@@ -137,7 +138,7 @@ export const ProductSectionClient: React.FC<ProductSectionClientProps> = ({
                         ))}
                     </div>
                 ) : (
-                    <div className="relative max-w-6xl mx-auto group">
+                    <div className="relative max-w-5xl mx-auto group">
                         <Carousel setApi={setApi} opts={{ align: 'start', loop: true }} className="w-full">
                             <CarouselContent className="-ml-4 md:-ml-8">
                                 {products.map((product) => (
@@ -148,19 +149,19 @@ export const ProductSectionClient: React.FC<ProductSectionClientProps> = ({
                             </CarouselContent>
 
                             <div className="hidden lg:block">
-                                <CarouselPrevious className="absolute -left-6 lg:-left-12 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm text-black border border-gray-100 shadow-lg hover:bg-black hover:text-white transition-all size-12 z-10 rounded-2xl" />
-                                <CarouselNext className="absolute -right-6 lg:-right-12 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm text-black border border-gray-100 shadow-lg hover:bg-black hover:text-white transition-all size-12 z-10 rounded-2xl" />
+                                <CarouselPrevious className="absolute -left-12 lg:-left-16 top-1/2 -translate-y-1/2 bg-white text-gray-900 border border-gray-200 shadow-lg hover:border-[#D4BC9B] hover:text-[#D4BC9B] transition-all duration-300 size-12 z-20 rounded-full flex items-center justify-center group/btn [&_svg]:size-6" />
+                                <CarouselNext className="absolute -right-12 lg:-right-16 top-1/2 -translate-y-1/2 bg-white text-gray-900 border border-gray-200 shadow-lg hover:border-[#D4BC9B] hover:text-[#D4BC9B] transition-all duration-300 size-12 z-20 rounded-full flex items-center justify-center group/btn [&_svg]:size-6" />
                             </div>
                         </Carousel>
 
-                        <div className="flex justify-center gap-3 mt-12">
+                        <div className="flex justify-center gap-2 mt-12">
                             {Array.from({ length: count }).map((_, i) => (
                                 <button
                                     key={i}
                                     onClick={() => scrollTo(i)}
                                     className={cn(
                                         "h-1.5 rounded-full transition-all duration-500",
-                                        current === i ? "w-10 bg-[#D4BC9B]" : "w-1.5 bg-gray-200 hover:bg-gray-300"
+                                        current === i ? "w-8 bg-[#D4BC9B]" : "w-2 bg-gray-200 hover:bg-gray-300"
                                     )}
                                 />
                             ))}

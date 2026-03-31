@@ -22,18 +22,6 @@ export const TrustStats: Block = {
                     required: true,
                     label: 'Label (e.g. Happy Families)',
                 },
-                {
-                    name: 'icon',
-                    type: 'select',
-                    label: 'Icon',
-                    options: [
-                        { label: 'Users', value: 'users' },
-                        { label: 'Home', value: 'home' },
-                        { label: 'Award', value: 'award' },
-                        { label: 'Clock', value: 'clock' },
-                        { label: 'Check', value: 'check' },
-                    ],
-                }
             ],
         },
     ],

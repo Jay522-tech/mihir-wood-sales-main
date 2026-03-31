@@ -25,6 +25,15 @@ export const ReviewsSection: Block = {
             ],
         },
         {
+            name: 'limit',
+            type: 'number',
+            defaultValue: 3,
+            label: 'Review Limit',
+            admin: {
+                condition: (_: any, siblingData: any) => siblingData.populateBy === 'collection',
+            },
+        },
+        {
             name: 'selectedReviews',
             type: 'relationship',
             admin: {
@@ -32,6 +41,28 @@ export const ReviewsSection: Block = {
             },
             hasMany: true,
             relationTo: 'reviews',
+        },
+        {
+            name: 'showExploreButton',
+            type: 'checkbox',
+            defaultValue: true,
+            label: 'Show Explore Button',
+        },
+        {
+            name: 'exploreLink',
+            type: 'text',
+            defaultValue: '#',
+            label: 'Explore Button Link',
+            admin: {
+                condition: (_: any, siblingData: any) => siblingData.showExploreButton,
+            },
+        },
+
+        {
+            name: 'trustedByText',
+            type: 'text',
+            defaultValue: 'Trusted by 12,000+ Happy Families',
+            label: 'Trusted By Text',
         },
     ],
     interfaceName: 'ReviewsSectionBlock',

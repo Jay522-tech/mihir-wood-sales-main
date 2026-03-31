@@ -6,9 +6,14 @@ import { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
+import { defaultAboutPage } from '../page-fallback'
 
 export async function generateMetadata(): Promise<Metadata> {
     const page = await queryPage('about')
+
+    if (!page) {
+        return {}
+    }
 
     return generateMeta({ doc: page })
 }
@@ -40,9 +45,9 @@ const Page = async () => {
     }
 
     return (
-        <article className="pt-16 pb-24">
-            <RenderHero {...page.hero} />
-            <RenderBlocks blocks={page.layout} />
+        <article>
+            <RenderHero {...page.hero as any} />
+            <RenderBlocks blocks={page.layout as any} />
         </article>
     )
 }

@@ -10,7 +10,6 @@ import { BulkOrderBanner } from '@/blocks/BulkOrderBanner/config'
 import { CallToAction } from '@/blocks/CallToAction/config'
 import { Carousel } from '@/blocks/Carousel/config'
 import { CategoryCircles } from '@/blocks/CategoryCircles/config'
-import { CategoryGrid } from '@/blocks/CategoryGrid/config'
 import { Content } from '@/blocks/Content/config'
 import { CustomFurniture } from '@/blocks/CustomFurniture/config'
 import { FeatureGrid } from '@/blocks/FeatureGrid/config'
@@ -19,6 +18,7 @@ import { InquirySection } from '@/blocks/InquirySection/config'
 import { ManufacturingProcess } from '@/blocks/ManufacturingProcess/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { ProductSection } from '@/blocks/ProductSection/config'
+import { ProjectProcess } from '@/blocks/ProjectProcess/config'
 import { ProjectShowcase } from '@/blocks/ProjectShowcase/config'
 import { ReviewsBlock } from '@/blocks/Reviews/config'
 import { ReviewsSection } from '@/blocks/ReviewsSection/config'
@@ -111,7 +111,6 @@ export const Pages: CollectionConfig = {
                 ThreeItemGrid,
                 Banner,
                 FormBlock,
-                CategoryGrid,
                 ReviewsBlock,
                 BlogArchive,
                 StoreArchive,
@@ -126,6 +125,7 @@ export const Pages: CollectionConfig = {
                 AsymmetricalContent,
                 FeatureGrid,
                 ProjectShowcase,
+                ProjectProcess,
               ],
               required: true,
             },

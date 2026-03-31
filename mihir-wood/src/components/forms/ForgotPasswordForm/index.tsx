@@ -50,40 +50,51 @@ export const ForgotPasswordForm: React.FC = () => {
     <Fragment>
       {!success && (
         <React.Fragment>
-          <h1 className="text-xl mb-4">Forgot Password</h1>
-          <div className="prose dark:prose-invert mb-8">
-            <p>
-              {`Please enter your email below. You will receive an email message with instructions on
-              how to reset your password. To manage your all users, `}
-              <Link href="/admin/collections/users">login to the admin dashboard</Link>.
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tighter italic mb-2">Forgot Password</h1>
+            <p className="text-sm text-gray-500">
+              Enter your email to receive reset instructions.
             </p>
           </div>
-          <form className="max-w-lg" onSubmit={handleSubmit(onSubmit)}>
-            <Message className="mb-8" error={error} />
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            <Message error={error} />
 
-            <FormItem className="mb-8">
-              <Label htmlFor="email" className="mb-2">
+            <FormItem>
+              <Label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-2 block">
                 Email address
               </Label>
               <Input
                 id="email"
+                className="rounded-xl border-gray-200 focus:border-[#D4BC9B] focus:ring-[#D4BC9B] bg-gray-50/50"
                 {...register('email', { required: 'Please provide your email.' })}
                 type="email"
               />
               {errors.email && <FormError message={errors.email.message} />}
             </FormItem>
 
-            <Button type="submit" variant="default">
-              Forgot Password
+            <Button
+              className="w-full bg-black hover:bg-black/90 text-white rounded-xl py-6 font-bold uppercase tracking-widest text-xs transition-all shadow-lg hover:shadow-black/20"
+              type="submit"
+            >
+              Send Reset Link
             </Button>
+
+            <div className="mt-6 text-center">
+              <Link href="/login" className="text-xs font-bold text-[#D4BC9B] hover:underline uppercase tracking-widest">
+                Back to login
+              </Link>
+            </div>
           </form>
         </React.Fragment>
       )}
       {success && (
         <React.Fragment>
-          <h1 className="text-xl mb-4">Request submitted</h1>
-          <div className="prose dark:prose-invert">
-            <p>Check your email for a link that will allow you to securely reset your password.</p>
+          <div className="text-center py-8">
+            <h1 className="text-2xl font-black text-gray-900 uppercase tracking-tighter italic mb-4">Request submitted</h1>
+            <p className="text-gray-500 mb-8">Check your email for a link to securely reset your password.</p>
+            <Button asChild variant="outline" className="border-gray-200 rounded-xl py-6 font-bold uppercase tracking-widest text-xs hover:bg-gray-50">
+              <Link href="/login">Return to Login</Link>
+            </Button>
           </div>
         </React.Fragment>
       )}

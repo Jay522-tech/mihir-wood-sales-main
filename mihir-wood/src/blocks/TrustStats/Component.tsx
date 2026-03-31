@@ -1,14 +1,4 @@
-'use client'
-import { Award, Check, Clock, Home, Users } from 'lucide-react'
 import React from 'react'
-
-const iconMap = {
-    users: Users,
-    home: Home,
-    award: Award,
-    clock: Clock,
-    check: Check,
-}
 
 export const TrustStats: React.FC<any> = (props) => {
     const { stats } = props
@@ -20,18 +10,13 @@ export const TrustStats: React.FC<any> = (props) => {
             <div className="container px-4">
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
                     {stats.map((stat: any, i: number) => {
-                        const IconComponent = stat.icon ? iconMap[stat.icon as keyof typeof iconMap] : null
-
                         return (
-                            <div key={i} className="flex flex-col items-center text-center space-y-4 group">
-                                <div className="p-4 bg-[#F9F7F2] rounded-2xl text-[#D4BC9B] group-hover:bg-[#D4BC9B] group-hover:text-white transition-all duration-500 shadow-sm">
-                                    {IconComponent && <IconComponent size={32} />}
-                                </div>
+                            <div key={i} className="flex flex-col items-center text-center">
                                 <div className="space-y-1">
-                                    <h3 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tighter italic">
+                                    <h3 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tighter italic">
                                         {stat.value}
                                     </h3>
-                                    <p className="text-xs md:text-sm font-bold text-gray-500 uppercase tracking-widest italic">
+                                    <p className="text-[10px] md:text-[11px] font-black text-[#D4BC9B] uppercase tracking-[0.4em] italic">
                                         {stat.label}
                                     </p>
                                 </div>

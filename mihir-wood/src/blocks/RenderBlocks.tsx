@@ -14,6 +14,7 @@ import { FormBlock } from '@/blocks/Form/Component'
 import { InquirySection } from '@/blocks/InquirySection/Component'
 import { ManufacturingProcess } from '@/blocks/ManufacturingProcess/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { ProjectProcess } from '@/blocks/ProjectProcess/Component'
 import { ProductSection } from '@/blocks/ProductSection/Component'
 import { ProjectShowcase } from '@/blocks/ProjectShowcase/Component'
 import { Reviews } from '@/blocks/Reviews/Component'
@@ -50,6 +51,7 @@ const blockComponents = {
   asymmetricalContent: AsymmetricalContent,
   featureGrid: FeatureGrid,
   projectShowcase: ProjectShowcase,
+  projectProcess: ProjectProcess,
 }
 
 export const RenderBlocks: React.FC<{

@@ -300,3 +300,10 @@ button {
   scrollbar-width: none;
   /* Firefox */
 }
+
+@layer utilities {
+    .stroke-text {
+        -webkit-text-stroke: 1px #D4BC9B;
+        color: transparent;
+    }
+}

@@ -33,13 +33,13 @@ export const SliderHero: React.FC<Page['hero']> = ({ slides, speed }) => {
         >
             <CarouselContent className="ml-0">
                 {slides.map((slide, i) => (
-                    <CarouselItem key={i} className="relative pl-0 flex items-center justify-center min-h-[80vh] basis-full">
-                        <div className="container z-10 relative flex items-center justify-center">
-                            <div className="max-w-146 md:text-center text-white">
+                    <CarouselItem key={i} className="relative pl-0 flex items-center justify-center min-h-[50vh] basis-full">
+                        <div className="container z-10 relative flex flex-col justify-center">
+                            <div className="max-w-[45rem] text-white">
                                 {slide.subTitle && <p className="mb-4 text-sm font-bold uppercase tracking-widest">{slide.subTitle}</p>}
                                 {slide.richText && <RichText className="mb-6" data={slide.richText} enableGutter={false} />}
                                 {Array.isArray(slide.links) && slide.links.length > 0 && (
-                                    <ul className="flex md:justify-center gap-4">
+                                    <ul className="flex gap-4">
                                         {slide.links.map(({ link }, j) => (
                                             <li key={j}>
                                                 <CMSLink {...link} />

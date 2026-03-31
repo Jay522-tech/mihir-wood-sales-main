@@ -1,22 +1,22 @@
 'use client'
-import { Cart } from '@/components/Cart'
-import { OpenCartButton } from '@/components/Cart/OpenCart'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { Suspense } from 'react'
 
 import type { Header } from 'src/payload-types'
 import { MobileMenu } from './MobileMenu'
+import type { CategoryWithChildren } from './index'
 
 import { cn } from '@/utilities/cn'
 import { createUrl } from '@/utilities/createUrl'
-import { Heart, Search, X } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 
 type Props = {
   header: Header
+  categoryTree: CategoryWithChildren[]
 }
-export function HeaderClient({ header }: Props) {
+export function HeaderClient({ header, categoryTree }: Props) {
   const [isSearchOpen, setIsSearchOpen] = React.useState(false)
   const [searchValue, setSearchValue] = React.useState('')
   const router = useRouter()
@@ -24,7 +24,7 @@ export function HeaderClient({ header }: Props) {
   const pathname = usePathname()
   const hardcodedMenu = [
     { label: 'Home', url: '/' },
-    { label: 'Collections', url: '/shop' },
+    { label: 'Shop', url: '/shop' },
     { label: 'Custom', url: '/#custom' },
     { label: 'Bulk', url: '/bulk-orders' },
     { label: 'About', url: '/about' },
@@ -43,7 +43,7 @@ export function HeaderClient({ header }: Props) {
 
   return (
     <div className="relative z-20 bg-white border-b border-gray-100">
-      <nav className="container flex items-center justify-between py-4 uppercase tracking-widest text-[11px] font-bold">
+      <nav className="container flex items-center justify-between py-1 min-h-[60px] uppercase tracking-widest text-[11px] font-bold">
         {/* Mobile menu toggle */}
         <div className="flex items-center md:hidden">
           <Suspense fallback={null}>
@@ -92,9 +92,9 @@ export function HeaderClient({ header }: Props) {
               </button>
             </form>
           ) : (
-            <ul className="hidden lg:flex items-center gap-10">
+            <ul className="hidden lg:flex items-center gap-10 h-full">
               {hardcodedMenu.map((item) => (
-                <li key={item.label}>
+                <li key={item.label} className={cn("flex items-center h-full", item.label === 'Shop' ? 'group/shop' : '')}>
                   <Link
                     href={item.url}
                     className={cn(
@@ -103,10 +103,60 @@ export function HeaderClient({ header }: Props) {
                         'text-black border-black':
                           item.url !== '/' ? pathname.includes(item.url) : pathname === '/',
                       },
+                      item.label === 'Shop' ? 'group-hover/shop:text-black group-hover/shop:border-black z-50 py-4' : 'py-4'
                     )}
                   >
                     {item.label}
                   </Link>
+
+                  {item.label === 'Shop' && (
+                    <div className="absolute left-0 top-full w-full bg-white border-t border-gray-200 opacity-0 invisible group-hover/shop:opacity-100 group-hover/shop:visible transition-all duration-300 z-40 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.08)] pt-8 pb-10 pointer-events-none group-hover/shop:pointer-events-auto">
+                      <div className="container mx-auto px-4 md:px-12 flex flex-wrap lg:flex-nowrap gap-x-16 gap-y-8 justify-start max-w-[1400px]">
+                        {categoryTree?.map((mainCategory) => (
+                          <div key={mainCategory.id} className={cn("flex flex-col", mainCategory.children && mainCategory.children.length > 8 ? "flex-[2]" : "min-w-[280px] flex-1 max-w-[350px]")}>
+                            <Link
+                              href={`/shop?category=${mainCategory.id}`}
+                              className="text-[13px] font-black tracking-[0.2em] uppercase mb-4 text-black hover:text-[#D4BC9B] transition-colors border-b border-neutral-100 pb-3 inline-block w-full"
+                            >
+                              {mainCategory.title}
+                            </Link>
+                            {mainCategory.children && mainCategory.children.length > 0 && (
+                              <ul className={cn("gap-x-12", mainCategory.children.length > 8 ? "columns-1 md:columns-2 lg:columns-3" : "flex flex-col gap-3")}>
+                                {mainCategory.children.map((subCategory: any) => (
+                                  <li key={subCategory.id} className="break-inside-avoid mb-4">
+                                    <Link
+                                      href={`/shop?category=${subCategory.id}`}
+                                      className={cn(
+                                        "text-[11px] font-bold text-neutral-700 hover:text-black transition-colors inline-block uppercase tracking-wider",
+                                        subCategory.children && subCategory.children.length > 0 ? "mb-2 text-black tracking-[0.15em]" : ""
+                                      )}
+                                    >
+                                      {subCategory.title}
+                                    </Link>
+                                    {subCategory.children && subCategory.children.length > 0 && (
+                                      <ul className="flex flex-col gap-2 mt-1">
+                                        {subCategory.children.map((subSub: any) => (
+                                          <li key={subSub.id}>
+                                            <Link
+                                              href={`/shop?category=${subSub.id}`}
+                                              className="text-[10px] font-semibold text-neutral-500 hover:text-[#D4BC9B] transition-colors flex items-center uppercase tracking-wider group/link"
+                                            >
+                                              <span className="w-2 h-[1px] bg-neutral-300 mr-2 group-[.group\/link]:hover:bg-[#D4BC9B] transition-colors" />
+                                              {subSub.title}
+                                            </Link>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    )}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
@@ -123,14 +173,6 @@ export function HeaderClient({ header }: Props) {
               <Search className="w-[20px] h-[20px] transition-transform group-hover:scale-110" strokeWidth={2} />
             </button>
           )}
-          <button className="hidden sm:block text-neutral-700 hover:text-black transition-colors p-2 group rounded-full hover:bg-neutral-50">
-            <Heart className="w-[20px] h-[20px] transition-transform group-hover:scale-110" strokeWidth={2} />
-          </button>
-          <div className="relative">
-            <Suspense fallback={<OpenCartButton />}>
-              <Cart />
-            </Suspense>
-          </div>
         </div>
       </nav>
     </div>

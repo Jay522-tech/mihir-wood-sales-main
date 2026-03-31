@@ -11,6 +11,14 @@ export const Header: GlobalConfig = {
   },
   fields: [
     {
+      name: 'promotionText',
+      label: 'Promotion Text',
+      type: 'text',
+      admin: {
+        description: 'Text to display in the top announcement bar',
+      },
+    },
+    {
       name: 'navItems',
       type: 'array',
       fields: [

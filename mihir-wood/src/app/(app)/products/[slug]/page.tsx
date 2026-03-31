@@ -16,12 +16,20 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import configPromise from '@payload-config'
-import { CheckCircle2, ShieldCheck, Trophy } from 'lucide-react'
+import { ShieldCheck } from 'lucide-react'
 import { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import { Suspense } from 'react'
+import * as LucideIcons from 'lucide-react'
+
+const IconMap = {
+  Trophy: LucideIcons.Trophy,
+  CheckCircle2: LucideIcons.CheckCircle2,
+  ShieldCheck: LucideIcons.ShieldCheck,
+  Star: LucideIcons.Star,
+}
 
 type Args = {
   params: Promise<{
@@ -84,7 +92,7 @@ export default async function ProductPage({ params }: Args) {
     },
   })
 
-  let gallery =
+  const gallery =
     product.gallery
       ?.filter((item) => typeof item.image === 'object')
       .map((item) => ({
@@ -182,6 +190,10 @@ export default async function ProductPage({ params }: Args) {
   })
 
   let reviews: any[] = reviewsResult.docs
+  const totalReviews = reviewsResult.totalDocs || 0
+  const averageRating = totalReviews > 0
+    ? reviews.reduce((acc, review) => acc + (review.rating || 0), 0) / totalReviews
+    : 0
 
   if (reviews.length === 0) {
     reviews = [
@@ -336,7 +348,13 @@ export default async function ProductPage({ params }: Args) {
               <div className="prose prose-neutral max-w-none text-neutral-600 leading-relaxed italic text-base md:text-lg">
                 {product.description && <RichText data={product.description} enableGutter={false} />}
                 <ul className="not-italic space-y-3 mt-6">
-                  {['Solid Sheesham wood construction', 'Intricate hand-carved Haveli-inspired design', 'Two cabinet doors with spacious internal storage', 'Hand-polished with premium finishes', 'Ideal for adding luxurious, timeless elegance to your home.'].map((item, i) => (
+                  {(product.storyBullets?.length ? product.storyBullets.map(b => b.bullet) : [
+                    'Solid Sheesham wood construction',
+                    'Intricate hand-carved Haveli-inspired design',
+                    'Two cabinet doors with spacious internal storage',
+                    'Hand-polished with premium finishes',
+                    'Ideal for adding luxurious, timeless elegance to your home.'
+                  ]).map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <span className="text-[#D4BC9B] mt-1.5">•</span>
                       <span>{item}</span>
@@ -350,21 +368,24 @@ export default async function ProductPage({ params }: Args) {
             <div className="order-5 w-full space-y-6 md:space-y-8">
               <h2 className="text-2xl md:text-3xl font-serif text-neutral-900 border-b border-neutral-100 pb-6 uppercase tracking-tight">Exquisite Materials</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-                {[
-                  { title: 'Solid Sheesham Wood', icon: Trophy, desc: 'Premium Hardwood' },
-                  { title: 'Natural Finishes', icon: CheckCircle2, desc: 'Eco-polished' },
-                  { title: 'Premium Photos', icon: ShieldCheck, desc: 'Exact product' }
-                ].map((item, i) => (
-                  <div key={i} className="bg-white p-6 rounded-xl border border-neutral-100 flex flex-col items-center text-center gap-3">
-                    <div className="text-[#D4BC9B]">
-                      <item.icon size={24} />
+                {(product.materials?.length ? product.materials : [
+                  { title: 'Solid Sheesham Wood', icon: 'Trophy', description: 'Premium Hardwood' },
+                  { title: 'Natural Finishes', icon: 'CheckCircle2', description: 'Eco-polished' },
+                  { title: 'Premium Photos', icon: 'ShieldCheck', description: 'Exact product' }
+                ]).map((item, i) => {
+                  const Icon = IconMap[item.icon as keyof typeof IconMap] || LucideIcons.Package
+                  return (
+                    <div key={i} className="bg-white p-6 rounded-xl border border-neutral-100 flex flex-col items-center text-center gap-3">
+                      <div className="text-[#D4BC9B]">
+                        <Icon size={24} />
+                      </div>
+                      <div className="space-y-1">
+                        <h3 className="font-serif text-sm text-neutral-900">{(item as any).title}</h3>
+                        <p className="text-[10px] text-neutral-400 uppercase tracking-widest">{(item as any).description}</p>
+                      </div>
                     </div>
-                    <div className="space-y-1">
-                      <h3 className="font-serif text-sm text-neutral-900">{item.title}</h3>
-                      <p className="text-[10px] text-neutral-400 uppercase tracking-widest">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
 
@@ -372,15 +393,15 @@ export default async function ProductPage({ params }: Args) {
             <div className="order-6 w-full space-y-6">
               <h2 className="text-xl md:text-2xl font-serif text-neutral-900 border-b border-neutral-200 pb-4">Terms & Conditions</h2>
               <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4">
-                {[
+                {(product.trustStats?.length ? product.trustStats : [
                   { value: '2.2k+', label: 'Projects' },
                   { value: '15+', label: 'Years' },
                   { value: '40+', label: 'Cities' },
                   { value: product.warranty || '5', label: 'Warranty' }
-                ].map((stat, i) => (
+                ]).map((stat, i) => (
                   <div key={i} className="bg-white p-4 md:p-6 rounded-xl border border-neutral-100 flex flex-col items-center text-center gap-1">
-                    <span className="text-xl md:text-2xl font-serif text-[#D4BC9B]">{stat.value}</span>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-neutral-400">{stat.label}</span>
+                    <span className="text-xl md:text-2xl font-serif text-[#D4BC9B]">{(stat as any).value}</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-neutral-400">{(stat as any).label}</span>
                   </div>
                 ))}
               </div>
@@ -390,7 +411,7 @@ export default async function ProductPage({ params }: Args) {
             <div className="order-7 w-full bg-neutral-50 rounded-2xl p-8 space-y-6 border border-neutral-100">
               <div className="text-center md:text-left space-y-2">
                 <h2 className="text-2xl font-serif text-neutral-900">Why Customers Trust Us</h2>
-                <p className="text-sm text-neutral-500 italic">Got questions? We're here to help.</p>
+                <p className="text-sm text-neutral-500 italic">Got questions? We&apos;re here to help.</p>
               </div>
               <div className="grid grid-cols-1 gap-4">
                 <input type="text" placeholder="Your Name" className="w-full h-12 px-6 rounded-full border border-neutral-200 bg-white text-sm focus:outline-none focus:ring-1 ring-[#D4BC9B]" />
@@ -402,14 +423,18 @@ export default async function ProductPage({ params }: Args) {
           {/* Right Column Group */}
           <div className="contents lg:block lg:space-y-12">
             <div className="order-2 w-full">
-              <ProductDescription product={product} />
+              <ProductDescription
+                product={product}
+                averageRating={averageRating}
+                totalReviews={totalReviews}
+              />
             </div>
 
             {/* Product Specifications Box */}
             <div className="order-3 w-full bg-[#FEF9F3] border border-[#F3E6D5] rounded-xl p-8 space-y-6">
               <h2 className="text-2xl font-serif text-neutral-900">Product Specifications</h2>
               <div className="space-y-4">
-                {[
+                {(product.specifications?.length ? product.specifications : [
                   { label: 'Dimensions', value: "40' L x 18' D x 36' H" },
                   { label: 'Cabinet Size', value: 'Spacious double-door cabinet' },
                   { label: 'Wood', value: 'Sheesham (Rosewood)' },
@@ -417,7 +442,7 @@ export default async function ProductPage({ params }: Args) {
                   { label: 'Weight', value: '50 kg' },
                   { label: 'Origin', value: 'Made in India' },
                   { label: 'Warranty', value: product.warranty ? `${product.warranty} Warranty` : '5 Years Warranty' }
-                ].map((spec, i) => (
+                ]).map((spec, i) => (
                   <div key={i} className="flex justify-between items-center text-sm">
                     <span className="text-neutral-500">{spec.label}:</span>
                     <span className="font-medium text-neutral-900">{spec.value}</span>

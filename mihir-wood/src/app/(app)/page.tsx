@@ -2,6 +2,7 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { defaultHomePage } from './page-fallback'
 
 export default async function HomePage() {
     const payload = await getPayload({ config: configPromise })
@@ -16,21 +17,94 @@ export default async function HomePage() {
         limit: 1,
     })
 
-    const homePage = result.docs?.[0]
+    let homePage = result.docs?.[0] as any
 
     if (!homePage) {
-        return (
-            <div className="flex items-center justify-center min-h-[50vh]">
-                <p className="text-gray-500 font-bold uppercase tracking-widest text-sm">
-                    Home page not found. Please create a page with slug "home" in the CMS.
-                </p>
-            </div>
-        )
+        // Deep clone so we can inject dynamic data into the fallback
+        homePage = JSON.parse(JSON.stringify(defaultHomePage))
+
+        try {
+            const categoriesResult = await payload.find({
+                collection: 'categories',
+                limit: 6,
+                depth: 1,
+                sort: 'createdAt', // Or any other sort order
+            })
+
+            if (categoriesResult.docs.length > 0) {
+                // Find the categoryCircles block and inject the real categories
+                const catBlock = homePage?.layout?.find((b: any) => b.blockType === 'categoryCircles')
+                if (catBlock) {
+                    catBlock.selectedCategories = categoriesResult.docs
+                }
+            }
+
+            // 2. Fetch Bulk Order Global and inject into banner
+            const bulkOrderGlobal = await (payload as any).findGlobal({
+                slug: 'bulk-order',
+            })
+
+            if (bulkOrderGlobal) {
+                const bulkBlock: any = homePage?.layout?.find((b: any) => b.blockType === 'bulkOrderBanner')
+                if (bulkBlock) {
+                    bulkBlock.title = bulkOrderGlobal.title
+                    bulkBlock.highlightText = bulkOrderGlobal.highlightText
+                    bulkBlock.description = bulkOrderGlobal.description
+                    bulkBlock.image = bulkOrderGlobal.image
+                    bulkBlock.links = bulkOrderGlobal.links
+                }
+            }
+
+            // 3. Fetch Home Hero Global and inject into hero
+            const homeHeroGlobal = await (payload as any).findGlobal({
+                slug: 'home-hero',
+            })
+
+            if (homeHeroGlobal && homePage?.hero) {
+                homePage.hero.subTitle = homeHeroGlobal.subTitle
+                homePage.hero.media = homeHeroGlobal.image
+                homePage.hero.links = homeHeroGlobal.links
+                // For richText title, we wrap it in the required structure if it's just a string,
+                // or just update it if the user provided one.
+                if (homeHeroGlobal.title) {
+                    (homePage.hero as any).richText = {
+                        root: {
+                            type: 'root',
+                            children: [
+                                {
+                                    type: 'heading',
+                                    tag: 'h1',
+                                    children: [{ type: 'text', version: 1, text: homeHeroGlobal.title }],
+                                    version: 1,
+                                },
+                            ],
+                            version: 1,
+                        },
+                    }
+                }
+            }
+
+            // 2. Fetch real products for the productSection
+            const productsResult = await payload.find({
+                collection: 'products',
+                limit: 8,
+                sort: '-createdAt',
+            })
+
+            if (productsResult.docs.length > 0) {
+                const productBlock = homePage?.layout?.find((b: any) => b.blockType === 'productSection')
+                if (productBlock) {
+                    productBlock.selectedProducts = productsResult.docs
+                }
+            }
+        } catch (error) {
+            console.error('Failed to fetch dynamic data for homepage fallback:', error)
+        }
     }
 
     return (
-        <article className="pt-20">
-            <RenderHero {...homePage.hero} />
+        <article>
+            <RenderHero {...(homePage.hero || {})} />
             <RenderBlocks blocks={homePage.layout || []} />
         </article>
     )

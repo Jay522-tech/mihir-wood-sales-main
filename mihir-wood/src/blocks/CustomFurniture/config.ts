@@ -6,7 +6,7 @@ export const CustomFurniture: Block = {
         {
             name: 'title',
             type: 'text',
-            defaultValue: 'Bespoke Craftmanship',
+            defaultValue: 'Bespoke Craftsmanship',
             label: 'Section Title',
         },
         {
@@ -42,10 +42,29 @@ export const CustomFurniture: Block = {
             defaultValue: 'Bespoke material and fabric options available.',
             label: 'Form Subtitle',
         },
+        {
+            name: 'categories',
+            type: 'relationship',
+            relationTo: 'categories',
+            hasMany: true,
+            label: 'Design Categories',
+        },
+        {
+            name: 'styles',
+            type: 'array',
+            label: 'Design Styles',
+            fields: [
+                {
+                    name: 'label',
+                    type: 'text',
+                    required: true,
+                },
+            ],
+        },
     ],
     interfaceName: 'CustomFurnitureBlock',
     labels: {
-        plural: 'Custom Furniture Sections',
-        singular: 'Custom Furniture Section',
+        plural: 'Bespoke Craftsmanship Sections',
+        singular: 'Bespoke Craftsmanship',
     },
 }

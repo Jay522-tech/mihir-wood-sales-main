@@ -23,6 +23,10 @@ export const Categories: CollectionConfig = {
       required: true,
     },
     {
+      name: 'subtitle',
+      type: 'text',
+    },
+    {
       name: 'parent',
       type: 'relationship',
       relationTo: 'categories',
@@ -45,9 +49,6 @@ export const Categories: CollectionConfig = {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
-      admin: {
-        position: 'sidebar',
-      },
     },
     slugField({
       position: undefined,

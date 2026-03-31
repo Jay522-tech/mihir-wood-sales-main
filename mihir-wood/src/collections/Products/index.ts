@@ -191,6 +191,115 @@ export const ProductsCollection: CollectionOverride = ({ defaultCollection }) =>
               },
             },
             {
+              name: 'shortDescription',
+              type: 'textarea',
+              label: 'Short Description (Marketing Blurb)',
+              admin: {
+                description: 'A brief, italicized description shown right under the price.',
+              },
+            },
+            {
+              name: 'storyBullets',
+              type: 'array',
+              label: 'Product Story Highlights',
+              admin: {
+                description: 'Bullet points shown in the Product Story section.',
+              },
+              fields: [
+                {
+                  name: 'bullet',
+                  type: 'text',
+                  required: true,
+                },
+              ],
+            },
+            {
+              name: 'specifications',
+              type: 'array',
+              label: 'Product Specifications',
+              admin: {
+                description: 'Key-value pairs for the specifications table.',
+              },
+              fields: [
+                {
+                  name: 'label',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'value',
+                  type: 'text',
+                  required: true,
+                },
+              ],
+            },
+            {
+              name: 'materials',
+              type: 'array',
+              label: 'Exquisite Materials (Badges)',
+              admin: {
+                description: 'Icons and text shown in the Exquisite Materials section.',
+              },
+              fields: [
+                {
+                  name: 'icon',
+                  type: 'select',
+                  options: [
+                    { label: 'Trophy', value: 'Trophy' },
+                    { label: 'Check Circle', value: 'CheckCircle2' },
+                    { label: 'Shield Check', value: 'ShieldCheck' },
+                    { label: 'Star', value: 'Star' },
+                  ],
+                  defaultValue: 'Trophy',
+                  required: true,
+                },
+                {
+                  name: 'title',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'description',
+                  type: 'text',
+                  required: true,
+                },
+              ],
+            },
+            {
+              name: 'trustStats',
+              type: 'array',
+              label: 'Trust Statistics (Counters)',
+              admin: {
+                description: 'Numbers and labels shown in the Terms & Conditions section.',
+              },
+              fields: [
+                {
+                  name: 'value',
+                  type: 'text', // Allow strings like "2.2k+"
+                  required: true,
+                },
+                {
+                  name: 'label',
+                  type: 'text',
+                  required: true,
+                },
+              ],
+            },
+            {
+              name: 'rating',
+              type: 'number',
+              defaultValue: 5,
+              min: 1,
+              max: 5,
+              label: 'Star Rating (1-5)',
+            },
+            {
+              name: 'reviewCount',
+              type: 'number',
+              defaultValue: 126,
+              label: 'Review Count (Display Text)',
+            },
+            {
               name: 'visitCount',
               type: 'number',
               defaultValue: 0,

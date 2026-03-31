@@ -29,14 +29,14 @@ export const ManufacturingProcess: React.FC<any> = (props) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 relative">
                     {/* Connection Line (Desktop) */}
-                    <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gray-100 -translate-y-16 z-0" />
+                    <div className="hidden lg:block absolute top-10 left-0 right-0 h-px bg-gray-100 z-0" />
 
                     {steps.map((step: any, i: number) => {
                         const IconComponent = step.icon ? iconMap[step.icon as keyof typeof iconMap] : null
 
                         return (
                             <div key={i} className="flex flex-col items-center text-center space-y-6 relative z-10 group">
-                                <div className="w-20 h-20 bg-white border-2 border-gray-100 rounded-full flex items-center justify-center text-[#D4BC9B] group-hover:border-[#D4BC9B] group-hover:bg-[#D4BC9B] group-hover:text-white transition-all duration-500 shadow-xl">
+                                <div className="w-20 h-20 bg-white border-2 border-gray-100 rounded-full flex items-center justify-center text-[#D4BC9B] group-hover:border-[#D4BC9B] group-hover:bg-[#D4BC9B] group-hover:text-white transition-all duration-500 shadow-xl relative z-10">
                                     {IconComponent && <IconComponent size={32} />}
                                 </div>
                                 <div className="space-y-3">
@@ -48,7 +48,7 @@ export const ManufacturingProcess: React.FC<any> = (props) => {
                                     </p>
                                 </div>
                                 {/* Step Number */}
-                                <div className="absolute -top-4 -left-2 text-6xl font-black text-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10">
+                                <div className="absolute top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl font-black text-gray-50/80 opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10 pointer-events-none select-none">
                                     0{i + 1}
                                 </div>
                             </div>

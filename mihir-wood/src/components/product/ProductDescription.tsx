@@ -15,7 +15,15 @@ import { MessageCircle, Share2, Star } from 'lucide-react'
 
 import { ShareModal } from './ShareModal'
 
-export function ProductDescription({ product }: { product: Product }) {
+export function ProductDescription({
+  product,
+  averageRating,
+  totalReviews,
+}: {
+  product: Product
+  averageRating?: number
+  totalReviews?: number
+}) {
   const { currency } = useCurrency()
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 
@@ -68,6 +76,9 @@ export function ProductDescription({ product }: { product: Product }) {
   }
 
 
+  const displayRating = averageRating && averageRating > 0 ? averageRating : (product.rating || 5)
+  const displayReviewCount = totalReviews && totalReviews > 0 ? totalReviews : (product.reviewCount || 126)
+
   return (
     <div className="flex flex-col gap-6">
       <div className="space-y-4">
@@ -86,16 +97,16 @@ export function ProductDescription({ product }: { product: Product }) {
         {/* Ratings Summary */}
         <div className="flex items-center gap-3">
           <div className="flex text-[#D4BC9B]">
-            {[...Array(5)].map((_, i) => (
+            {[...Array(Math.round(displayRating))].map((_, i) => (
               <Star key={i} size={16} fill="currentColor" />
             ))}
           </div>
-          <span className="text-sm text-neutral-500 font-medium">(126 Reviews)</span>
+          <span className="text-sm text-neutral-500 font-medium">({displayReviewCount} Reviews)</span>
         </div>
       </div>
 
       <div className="prose prose-neutral max-w-none text-neutral-600 leading-relaxed italic">
-        Exquisite solid wood chest designed with intricate Haveli-inspired hand carvings, adding a touch of timeless elegance to your home.
+        {product.shortDescription || "Exquisite solid wood chest designed with intricate Haveli-inspired hand carvings, adding a touch of timeless elegance to your home."}
       </div>
 
       {/* Action Buttons Row */}

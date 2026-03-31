@@ -62,18 +62,18 @@ export const AsymmetricalContent: React.FC<any> = (props) => {
                     <div className="lg:col-span-5 space-y-8 relative z-10">
                         <div className="space-y-4">
                             {badge && (
-                                <p className="text-[#D4BC9B] font-bold uppercase tracking-[0.4em] text-[10px] md:text-xs italic">
+                                <p className="text-[#D4BC9B] font-black uppercase tracking-[0.5em] text-[10px] md:text-xs">
                                     {badge}
                                 </p>
                             )}
-                            <h2 className="text-4xl md:text-6xl font-black text-gray-900 uppercase tracking-tighter italic leading-none">
+                            <h2 className="text-5xl md:text-7xl font-black text-gray-900 uppercase tracking-tighter leading-[0.85] italic">
                                 {firstPart} {firstPart && <br />}
-                                <span className="text-[#D4BC9B]">{lastPart}</span>
+                                <span className="text-[#D4BC9B]/20 stroke-text">{lastPart}</span>
                             </h2>
                         </div>
 
                         {description && (
-                            <div className="text-gray-600 font-medium leading-relaxed italic border-l-4 border-[#D4BC9B] pl-8">
+                            <div className="text-gray-600 font-medium leading-relaxed italic border-l-4 border-[#D4BC9B] pl-8 text-lg">
                                 <RichText data={description} enableGutter={false} />
                             </div>
                         )}

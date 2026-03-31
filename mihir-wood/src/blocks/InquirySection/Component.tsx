@@ -5,9 +5,81 @@ import Image from 'next/image'
 import React from 'react'
 
 export const InquirySection: React.FC<any> = (props) => {
-    const { title, description, image } = props
+    const { title, description, image, variant = 'default' } = props
 
     const imageUrl = typeof image === 'object' ? (image as Media)?.url : '/images/categories/sofa.png'
+
+    if (variant === 'simple') {
+        return (
+            <section className="bg-white py-16 md:py-24 overflow-hidden">
+                <div className="container px-4">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                            {/* Left: Image */}
+                            <div className="relative aspect-[4/3] lg:aspect-square rounded-[2.5rem] overflow-hidden shadow-2xl">
+                                {imageUrl && (
+                                    <Image
+                                        src={imageUrl}
+                                        alt="Request Quote"
+                                        fill
+                                        className="object-cover"
+                                    />
+                                )}
+                                <div className="absolute inset-0 bg-black/5" />
+                            </div>
+
+                            {/* Right: Form */}
+                            <div className="space-y-8">
+                                <div className="space-y-4">
+                                    <h2 className="text-3xl md:text-5xl font-black text-gray-900 uppercase tracking-tighter italic">
+                                        {title}
+                                    </h2>
+                                    {description && (
+                                        <p className="text-gray-500 font-medium italic">
+                                            {description}
+                                        </p>
+                                    )}
+                                    <div className="w-20 h-1 bg-[#D4BC9B] opacity-50" />
+                                </div>
+
+                                <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <input
+                                            type="text"
+                                            placeholder="Name"
+                                            className="w-full bg-[#F9F7F2] border-none rounded-xl px-6 py-4 text-sm font-bold text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-[#D4BC9B] transition-all"
+                                        />
+                                        <input
+                                            type="email"
+                                            placeholder="Email"
+                                            className="w-full bg-[#F9F7F2] border-none rounded-xl px-6 py-4 text-sm font-bold text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-[#D4BC9B] transition-all"
+                                        />
+                                    </div>
+                                    <input
+                                        type="tel"
+                                        placeholder="Phone"
+                                        className="w-full bg-[#F9F7F2] border-none rounded-xl px-6 py-4 text-sm font-bold text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-[#D4BC9B] transition-all"
+                                    />
+                                    <textarea
+                                        placeholder="Tell us about your project..."
+                                        rows={4}
+                                        className="w-full bg-[#F9F7F2] border-none rounded-xl px-6 py-4 text-sm font-bold text-gray-800 placeholder:text-gray-400 focus:ring-2 focus:ring-[#D4BC9B] transition-all resize-none"
+                                    />
+                                    <button
+                                        type="submit"
+                                        className="w-full bg-black text-white font-black py-5 rounded-xl uppercase tracking-[0.2em] shadow-lg hover:bg-[#D4BC9B] transition-all active:scale-[0.98] mt-2 group flex items-center justify-center gap-3"
+                                    >
+                                        SUBMIT REQUEST
+                                        <span className="w-8 h-px bg-white/30 group-hover:w-12 transition-all duration-500" />
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        )
+    }
 
     return (
         <section className="bg-[#FAF9F6] py-16 md:py-24">

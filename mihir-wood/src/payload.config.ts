@@ -23,6 +23,9 @@ import { Posts } from '@/collections/Posts'
 import { Stores } from '@/collections/Stores'
 import { Footer } from '@/globals/Footer'
 import { Header } from '@/globals/Header'
+import { Shop } from '@/globals/Shop'
+import { BulkOrder } from '@/globals/BulkOrder'
+import { HomeHero } from '@/globals/HomeHero'
 import { plugins } from './plugins'
 
 const filename = fileURLToPath(import.meta.url)
@@ -81,7 +84,7 @@ export default buildConfig({
   }),
   //email: nodemailerAdapter(),
   endpoints: [],
-  globals: [Header, Footer],
+  globals: [Header, Footer, Shop, BulkOrder, HomeHero],
   plugins,
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

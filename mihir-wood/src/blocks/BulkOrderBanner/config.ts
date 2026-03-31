@@ -7,20 +7,28 @@ export const BulkOrderBanner: Block = {
         {
             name: 'title',
             type: 'text',
-            defaultValue: 'LANY\'S OFFRES GET DRY BULK ON CUSTOM BANNER',
-            label: 'Banner Title',
+            defaultValue: 'TRANSFORM YOUR SPACE',
+            label: 'Banner Title (White Text)',
+        },
+        {
+            name: 'highlightText',
+            type: 'text',
+            defaultValue: 'AT SCALE',
+            label: 'Highlighted Text (Gold Text)',
+        },
+        {
+            name: 'description',
+            type: 'textarea',
+            label: 'Description',
         },
         {
             name: 'image',
             type: 'upload',
             relationTo: 'media',
             label: 'Background Image',
+            required: true,
         },
-        linkGroup({
-            overrides: {
-                maxRows: 1,
-            }
-        }),
+        linkGroup(),
     ],
     interfaceName: 'BulkOrderBannerBlock',
     labels: {
