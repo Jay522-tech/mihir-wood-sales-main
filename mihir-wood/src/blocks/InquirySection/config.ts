@@ -33,6 +33,48 @@ export const InquirySection: Block = {
             relationTo: 'media',
             label: 'Background Image',
         },
+        {
+            name: 'mapUrl',
+            type: 'text',
+            label: 'Google Map Embed URL',
+            admin: {
+                description: 'Enter the Google Maps embed URL to show a map instead of the image (Only works with "Project Quote" variant).'
+            }
+        },
+        {
+            name: 'testimonial',
+            type: 'group',
+            label: 'Testimonial (Default Variant Only)',
+            fields: [
+                {
+                    name: 'name',
+                    type: 'text',
+                    label: 'Name',
+                    defaultValue: 'Priya Sharma',
+                },
+                {
+                    name: 'role',
+                    type: 'text',
+                    label: 'Role/Title',
+                    defaultValue: 'Verified Customer',
+                },
+                {
+                    name: 'text',
+                    type: 'textarea',
+                    label: 'Testimonial Text',
+                    defaultValue: '"Our custom teak bed is a masterpiece! The craftsmanship is truly world-class."',
+                },
+                {
+                    name: 'image',
+                    type: 'upload',
+                    relationTo: 'media',
+                    label: 'Customer Photo',
+                },
+            ],
+            admin: {
+                condition: (data, siblingData) => data?.variant === 'default',
+            }
+        }
     ],
     interfaceName: 'InquirySectionBlock',
     labels: {

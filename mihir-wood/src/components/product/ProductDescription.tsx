@@ -3,6 +3,7 @@
 import type { Product, Variant } from '@/payload-types'
 import React, { Suspense, useState } from 'react'
 
+import { useWhatsApp } from '@/providers/WhatsApp'
 import { Price } from '@/components/Price'
 import { Button } from '@/components/ui/button'
 
@@ -25,6 +26,7 @@ export function ProductDescription({
   totalReviews?: number
 }) {
   const { currency } = useCurrency()
+  const { phoneNumber, productInquiryMessage, callToOrderNumber } = useWhatsApp()
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
 
   let amount = 0,
@@ -66,8 +68,8 @@ export function ProductDescription({
 
   const handleInquiry = (e: React.MouseEvent) => {
     e.preventDefault()
-    const message = formatProductMessage(product)
-    const link = getWhatsAppLink(message)
+    const message = formatProductMessage(product, productInquiryMessage)
+    const link = getWhatsAppLink(message, phoneNumber)
     window.open(link, '_blank')
   }
 
@@ -76,8 +78,8 @@ export function ProductDescription({
   }
 
 
-  const displayRating = averageRating && averageRating > 0 ? averageRating : (product.rating || 5)
-  const displayReviewCount = totalReviews && totalReviews > 0 ? totalReviews : (product.reviewCount || 126)
+  const displayRating = averageRating && averageRating > 0 ? averageRating : (product.rating || 0)
+  const displayReviewCount = totalReviews && totalReviews > 0 ? totalReviews : (product.reviewCount || 0)
 
   return (
     <div className="flex flex-col gap-6">
@@ -95,19 +97,23 @@ export function ProductDescription({
         </div>
 
         {/* Ratings Summary */}
-        <div className="flex items-center gap-3">
-          <div className="flex text-[#D4BC9B]">
-            {[...Array(Math.round(displayRating))].map((_, i) => (
-              <Star key={i} size={16} fill="currentColor" />
-            ))}
+        {displayReviewCount > 0 && (
+          <div className="flex items-center gap-3">
+            <div className="flex text-[#D4BC9B]">
+              {[...Array(Math.round(displayRating))].map((_, i) => (
+                <Star key={i} size={16} fill="currentColor" />
+              ))}
+            </div>
+            <span className="text-sm text-neutral-500 font-medium">({displayReviewCount} Reviews)</span>
           </div>
-          <span className="text-sm text-neutral-500 font-medium">({displayReviewCount} Reviews)</span>
-        </div>
+        )}
       </div>
 
-      <div className="prose prose-neutral max-w-none text-neutral-600 leading-relaxed italic">
-        {product.shortDescription || "Exquisite solid wood chest designed with intricate Haveli-inspired hand carvings, adding a touch of timeless elegance to your home."}
-      </div>
+      {product.shortDescription && (
+        <div className="prose prose-neutral max-w-none text-neutral-600 leading-relaxed italic">
+          {product.shortDescription}
+        </div>
+      )}
 
       {/* Action Buttons Row */}
       <div className="flex flex-col sm:flex-row gap-3 pt-2">
@@ -128,16 +134,18 @@ export function ProductDescription({
       </div>
 
       {/* Call to Order Banner */}
-      <div className="relative overflow-hidden rounded-lg bg-gradient-to-r from-[#B68C5A] to-[#D4BC9B] p-[1px]">
-        <div className="bg-white flex items-stretch h-14 rounded-[7px] overflow-hidden">
-          <div className="bg-[#B68C5A] text-white flex items-center justify-center px-4 md:px-6 text-[9px] md:text-[10px] uppercase font-black tracking-widest whitespace-nowrap">
-            Call to Order
-          </div>
-          <div className="flex-1 flex items-center justify-center bg-[#D4BC9B]/5 font-serif text-base md:text-xl text-neutral-900 tracking-wider">
-            +91 98765 43210
+      {callToOrderNumber && (
+        <div className="relative overflow-hidden rounded-lg bg-gradient-to-r from-[#B68C5A] to-[#D4BC9B] p-[1px]">
+          <div className="bg-white flex items-stretch h-14 rounded-[7px] overflow-hidden">
+            <div className="bg-[#B68C5A] text-white flex items-center justify-center px-4 md:px-6 text-[9px] md:text-[10px] uppercase font-black tracking-widest whitespace-nowrap">
+              Call to Order
+            </div>
+            <div className="flex-1 flex items-center justify-center bg-[#D4BC9B]/5 font-serif text-base md:text-xl text-neutral-900 tracking-wider">
+              {callToOrderNumber}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
 
       {hasVariants && (

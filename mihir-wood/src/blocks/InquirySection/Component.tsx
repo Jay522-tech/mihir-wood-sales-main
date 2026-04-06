@@ -13,33 +13,47 @@ export const InquirySection: React.FC<any> = (props) => {
         return (
             <section className="bg-white py-16 md:py-24 overflow-hidden">
                 <div className="container px-4">
-                    <div className="max-w-6xl mx-auto">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                            {/* Left: Image */}
-                            <div className="relative aspect-[4/3] lg:aspect-square rounded-[2.5rem] overflow-hidden shadow-2xl">
-                                {imageUrl && (
-                                    <Image
-                                        src={imageUrl}
-                                        alt="Request Quote"
-                                        fill
-                                        className="object-cover"
+                    <div className="max-w-7xl mx-auto">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                            {/* Left: Image or Map */}
+                            <div className="relative aspect-[4/3] lg:aspect-square rounded-[2.5rem] overflow-hidden shadow-2xl border border-neutral-100">
+                                {props.mapUrl ? (
+                                    <iframe
+                                        src={props.mapUrl}
+                                        width="100%"
+                                        height="100%"
+                                        style={{ border: 0 }}
+                                        allowFullScreen={true}
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade"
                                     />
+                                ) : (
+                                    <>
+                                        {imageUrl && (
+                                            <Image
+                                                src={imageUrl}
+                                                alt="Request Quote"
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        )}
+                                        <div className="absolute inset-0 bg-black/5" />
+                                    </>
                                 )}
-                                <div className="absolute inset-0 bg-black/5" />
                             </div>
 
-                            {/* Right: Form */}
-                            <div className="space-y-8">
-                                <div className="space-y-4">
-                                    <h2 className="text-3xl md:text-5xl font-black text-gray-900 uppercase tracking-tighter italic">
+                            {/* Right: Content & Form */}
+                            <div className="space-y-10">
+                                <div className="space-y-6">
+                                    <h2 className="text-4xl md:text-6xl font-serif text-gray-900 leading-tight italic">
                                         {title}
                                     </h2>
                                     {description && (
-                                        <p className="text-gray-500 font-medium italic">
+                                        <p className="text-lg text-gray-500 font-light italic max-w-lg">
                                             {description}
                                         </p>
                                     )}
-                                    <div className="w-20 h-1 bg-[#D4BC9B] opacity-50" />
+                                    <div className="w-16 h-px bg-[#D4BC9B] opacity-40" />
                                 </div>
 
                                 <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
@@ -100,30 +114,38 @@ export const InquirySection: React.FC<any> = (props) => {
                         </div>
 
                         {/* Floating Testimonial Card */}
-                        <div className="absolute -bottom-6 -left-6 md:-left-12 bg-white p-6 md:p-8 rounded-2xl shadow-2xl max-w-[300px] md:max-w-[380px] border border-gray-100 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                            <div className="flex items-center gap-4 mb-4">
-                                <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 border-2 border-[#D4BC9B] relative">
-                                    <Image
-                                        src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=150&h=150&auto=format&fit=crop"
-                                        alt="Priya Sharma"
-                                        fill
-                                        className="object-cover"
-                                    />
+                        {props.testimonial?.name && (
+                            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:-left-12 bg-white p-6 md:p-8 rounded-2xl shadow-2xl w-[calc(100%-2rem)] max-w-[300px] md:max-w-[380px] border border-gray-100 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 border-2 border-[#D4BC9B] relative">
+                                        {(props.testimonial.image as Media)?.url ? (
+                                            <Image
+                                                src={(props.testimonial.image as Media).url!}
+                                                alt={props.testimonial.name}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full bg-neutral-100 flex items-center justify-center text-[10px] text-neutral-400 font-bold uppercase">
+                                                {props.testimonial.name.slice(0, 2)}
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-gray-900 text-sm">{props.testimonial.name}</h4>
+                                        <p className="text-xs text-gray-500 font-medium">{props.testimonial.role || 'Verified Customer'}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h4 className="font-bold text-gray-900 text-sm">Priya Sharma</h4>
-                                    <p className="text-xs text-gray-500 font-medium">Verified Customer</p>
+                                <p className="text-gray-800 font-bold text-sm md:text-base leading-relaxed mb-4 italic">
+                                    {props.testimonial.text}
+                                </p>
+                                <div className="flex gap-1">
+                                    {[...Array(5)].map((_, i) => (
+                                        <Star key={i} className="w-4 h-4 fill-[#D4BC9B] text-[#D4BC9B]" />
+                                    ))}
                                 </div>
                             </div>
-                            <p className="text-gray-800 font-bold text-sm md:text-base leading-relaxed mb-4 italic">
-                                "Our custom teak bed is a masterpiece! The craftsmanship is truly world-class."
-                            </p>
-                            <div className="flex gap-1">
-                                {[...Array(5)].map((_, i) => (
-                                    <Star key={i} className="w-4 h-4 fill-[#D4BC9B] text-[#D4BC9B]" />
-                                ))}
-                            </div>
-                        </div>
+                        )}
                     </div>
 
                     {/* Right: Inquiry Form */}

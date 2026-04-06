@@ -24,24 +24,12 @@ export const hero: Field = {
           value: 'none',
         },
         {
-          label: 'High Impact',
-          value: 'highImpact',
-        },
-        {
-          label: 'Medium Impact',
-          value: 'mediumImpact',
-        },
-        {
           label: 'Low Impact',
           value: 'lowImpact',
         },
         {
-          label: 'Slider',
-          value: 'slider',
-        },
-        {
-          label: 'Haveli',
-          value: 'haveli',
+          label: 'Banner',
+          value: 'banner',
         },
       ],
       required: true,
@@ -51,14 +39,14 @@ export const hero: Field = {
       type: 'text',
       label: 'Sub Title',
       admin: {
-        condition: (_, { type } = {}) => !['none', 'slider'].includes(type),
+        condition: (_, { type } = {}) => false,
       },
     },
     {
       name: 'richText',
       type: 'richText',
       admin: {
-        condition: (_, { type } = {}) => !['none', 'slider'].includes(type),
+        condition: (_, { type } = {}) => false,
       },
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
@@ -75,7 +63,7 @@ export const hero: Field = {
     linkGroup({
       overrides: {
         admin: {
-          condition: (_, { type } = {}) => !['none', 'slider'].includes(type),
+          condition: (_, { type } = {}) => false,
         },
         maxRows: 2,
       },
@@ -84,7 +72,7 @@ export const hero: Field = {
       name: 'media',
       type: 'upload',
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact', 'haveli'].includes(type),
+        condition: (_, { type } = {}) => false,
       },
       relationTo: 'media',
       required: true,
@@ -93,33 +81,116 @@ export const hero: Field = {
       name: 'speed',
       type: 'number',
       defaultValue: 1,
+      admin: {
+        condition: (_, { type } = {}) => ['banner', 'lowImpact'].includes(type),
+      },
       label: 'Auto-Scroll Speed',
     },
     {
       name: 'slides',
       type: 'array',
       admin: {
-        condition: (_, { type } = {}) => type === 'slider',
+        condition: (_, { type } = {}) => ['banner', 'lowImpact'].includes(type),
       },
       fields: [
         {
-          name: 'subTitle',
-          type: 'text',
-          label: 'Sub Title',
+          name: 'contentAlignment',
+          type: 'select',
+          label: 'Content Alignment',
+          defaultValue: 'left',
+          options: [
+            { label: 'Left', value: 'left' },
+            { label: 'Center', value: 'center' },
+            { label: 'Right', value: 'right' },
+          ],
+          admin: {
+            width: '100%',
+          },
         },
         {
-          name: 'richText',
-          type: 'richText',
-          editor: lexicalEditor({
-            features: ({ rootFeatures }) => {
-              return [
-                ...rootFeatures,
-                HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                FixedToolbarFeature(),
-                InlineToolbarFeature(),
-              ]
+          type: 'row',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              label: 'Title',
+              admin: {
+                width: '70%',
+              },
             },
-          }),
+            {
+              name: 'titleColor',
+              type: 'text',
+              label: 'Title Color',
+              defaultValue: '#ffffff',
+              admin: {
+                width: '30%',
+                components: {
+                  Field: '@/components/Admin/ColorPicker#ColorPicker',
+                },
+              },
+            },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'subTitle',
+              type: 'text',
+              label: 'Sub Title',
+              admin: {
+                width: '70%',
+              },
+            },
+            {
+              name: 'subTitleColor',
+              type: 'text',
+              label: 'Sub Title Color',
+              defaultValue: '#ffffff',
+              admin: {
+                width: '30%',
+                components: {
+                  Field: '@/components/Admin/ColorPicker#ColorPicker',
+                },
+              },
+            },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'richText',
+              type: 'richText',
+              label: 'Description',
+              admin: {
+                width: '70%',
+              },
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                  ]
+                },
+              }),
+            },
+            {
+              name: 'descriptionColor',
+              type: 'text',
+              label: 'Description Color',
+              defaultValue: '#ffffff',
+              admin: {
+                width: '30%',
+                components: {
+                  Field: '@/components/Admin/ColorPicker#ColorPicker',
+                },
+              },
+            },
+          ],
         },
         linkGroup({
           overrides: {
@@ -127,10 +198,43 @@ export const hero: Field = {
           },
         }),
         {
-          name: 'media',
+          name: 'image',
           type: 'upload',
+          label: 'Background Image',
           relationTo: 'media',
-          required: true,
+          required: false,
+          admin: {
+            condition: (data) => ['banner', 'lowImpact'].includes(data?.hero?.type),
+          },
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'buttonBackgroundColor',
+              type: 'text',
+              label: 'Button Background Color',
+              defaultValue: '#D4BC9B',
+              admin: {
+                width: '50%',
+                components: {
+                  Field: '@/components/Admin/ColorPicker#ColorPicker',
+                },
+              },
+            },
+            {
+              name: 'buttonTextColor',
+              type: 'text',
+              label: 'Button Text Color',
+              defaultValue: '#000000',
+              admin: {
+                width: '50%',
+                components: {
+                  Field: '@/components/Admin/ColorPicker#ColorPicker',
+                },
+              },
+            },
+          ],
         },
       ],
       minRows: 1,

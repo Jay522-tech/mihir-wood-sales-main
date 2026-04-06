@@ -8,7 +8,7 @@ export const Shop: GlobalConfig = {
         update: adminOnly,
     },
     admin: {
-        group: 'Content',
+        group: 'Settings',
     },
     fields: [
         {

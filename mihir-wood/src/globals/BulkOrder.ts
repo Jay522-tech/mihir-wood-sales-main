@@ -4,7 +4,7 @@ import { GlobalConfig } from 'payload'
 export const BulkOrder: GlobalConfig = {
     slug: 'bulk-order',
     admin: {
-        group: 'Config',
+        group: 'Settings',
     },
     fields: [
         {

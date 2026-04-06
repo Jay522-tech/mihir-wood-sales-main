@@ -3,9 +3,23 @@ import { GlobalConfig } from 'payload'
 export const HomeHero: GlobalConfig = {
     slug: 'home-hero',
     admin: {
-        group: 'Config',
+        group: 'Settings',
     },
     fields: [
+        {
+            name: 'contentAlignment',
+            type: 'select',
+            label: 'Content Alignment',
+            defaultValue: 'left',
+            options: [
+                { label: 'Left', value: 'left' },
+                { label: 'Center', value: 'center' },
+                { label: 'Right', value: 'right' },
+            ],
+            admin: {
+                width: '100%',
+            },
+        },
         {
             name: 'title',
             type: 'text',

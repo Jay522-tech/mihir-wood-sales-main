@@ -5,6 +5,7 @@ import { adminOrPublishedStatus } from '@/access/adminOrPublishedStatus'
 import { Archive } from '@/blocks/ArchiveBlock/config'
 import { AsymmetricalContent } from '@/blocks/AsymmetricalContent/config'
 import { Banner } from '@/blocks/Banner/config'
+import { BrandHeritage } from '@/blocks/BrandHeritage/config'
 import { BlogArchive } from '@/blocks/BlogArchive/config'
 import { BulkOrderBanner } from '@/blocks/BulkOrderBanner/config'
 import { CallToAction } from '@/blocks/CallToAction/config'
@@ -14,6 +15,7 @@ import { Content } from '@/blocks/Content/config'
 import { CustomFurniture } from '@/blocks/CustomFurniture/config'
 import { FeatureGrid } from '@/blocks/FeatureGrid/config'
 import { FormBlock } from '@/blocks/Form/config'
+import { ContactInfoGrid } from '@/blocks/ContactInfoGrid/config'
 import { InquirySection } from '@/blocks/InquirySection/config'
 import { ManufacturingProcess } from '@/blocks/ManufacturingProcess/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
@@ -25,6 +27,11 @@ import { ReviewsSection } from '@/blocks/ReviewsSection/config'
 import { StoreArchive } from '@/blocks/StoreArchive/config'
 import { ThreeItemGrid } from '@/blocks/ThreeItemGrid/config'
 import { TrustStats } from '@/blocks/TrustStats/config'
+import { BulkOrderStats } from '@/blocks/BulkOrderStats/config'
+import { OneStopShop } from '@/blocks/OneStopShop/config'
+import { HowItWorks } from '@/blocks/HowItWorks/config'
+import { CustomizationOptions } from '@/blocks/CustomizationOptions/config'
+import { FAQBlock } from '@/blocks/FAQBlock/config'
 import { hero } from '@/fields/hero'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import {
@@ -110,7 +117,9 @@ export const Pages: CollectionConfig = {
                 Carousel,
                 ThreeItemGrid,
                 Banner,
+                BrandHeritage,
                 FormBlock,
+                ContactInfoGrid,
                 ReviewsBlock,
                 BlogArchive,
                 StoreArchive,
@@ -126,6 +135,11 @@ export const Pages: CollectionConfig = {
                 FeatureGrid,
                 ProjectShowcase,
                 ProjectProcess,
+                BulkOrderStats,
+                OneStopShop,
+                HowItWorks,
+                CustomizationOptions,
+                FAQBlock,
               ],
               required: true,
             },

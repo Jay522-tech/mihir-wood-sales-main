@@ -27,6 +27,12 @@ export const ReviewSection: React.FC<Props> = ({ reviews, productId }) => {
     const displayReviews = reviews.slice(0, 4)
     const hasMore = reviews.length > 4
 
+    // Dynamic rating calculation
+    const totalReviews = reviews.length
+    const averageRating = totalReviews > 0
+        ? Math.round((reviews.reduce((acc, r) => acc + (r.rating || 0), 0) / totalReviews) * 10) / 10
+        : 0
+
     // Lock body scroll when modal is open
     useEffect(() => {
         if (isModalOpen || isFormOpen) {
@@ -50,9 +56,18 @@ export const ReviewSection: React.FC<Props> = ({ reviews, productId }) => {
                 <div className="flex flex-wrap items-center gap-4">
                     <div className="flex items-center gap-3 bg-neutral-50 px-4 py-2 rounded-2xl border border-neutral-100">
                         <div className="flex text-[#D4BC9B]">
-                            {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="currentColor" />)}
+                            {[...Array(5)].map((_, i) => (
+                                <Star
+                                    key={i}
+                                    size={16}
+                                    fill={i < Math.round(averageRating) ? "currentColor" : "none"}
+                                    className={i < Math.round(averageRating) ? "" : "text-neutral-200"}
+                                />
+                            ))}
                         </div>
-                        <div className="px-3 py-1 bg-neutral-900 text-white text-[10px] font-bold rounded-full">4.9/5</div>
+                        <div className="px-3 py-1 bg-neutral-900 text-white text-[10px] font-bold rounded-full">
+                            {totalReviews > 0 ? `${averageRating.toFixed(1)}/5` : '0.0/5'}
+                        </div>
                     </div>
                     <Button
                         onClick={() => setIsFormOpen(true)}
@@ -63,27 +78,45 @@ export const ReviewSection: React.FC<Props> = ({ reviews, productId }) => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-12">
-                {displayReviews.map((review) => (
-                    <div key={review.id} className="group pb-8 border-b border-neutral-100 last:border-0 md:[&:nth-last-child(-n+2)]:border-0">
-                        <div className="flex items-center gap-1 mb-3">
-                            {[...Array(5)].map((_, i) => (
-                                <Star
-                                    key={i}
-                                    size={14}
-                                    className={i < review.rating ? "fill-amber-400 text-amber-400" : "text-neutral-200"}
-                                />
-                            ))}
-                            <span className="ml-2 font-medium text-sm text-neutral-900">{review.customerName}</span>
-                            <div className="ml-auto flex items-center gap-2">
-                                <span className="text-[10px] text-neutral-400 tracking-wider uppercase">{new Date(review.updatedAt).toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}</span>
+            {reviews.length > 0 ? (
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-12">
+                    {displayReviews.map((review) => (
+                        <div key={review.id} className="group pb-8 border-b border-neutral-100 last:border-0 md:[&:nth-last-child(-n+2)]:border-0">
+                            <div className="flex items-center gap-1 mb-3">
+                                {[...Array(5)].map((_, i) => (
+                                    <Star
+                                        key={i}
+                                        size={14}
+                                        className={i < review.rating ? "fill-amber-400 text-amber-400" : "text-neutral-200"}
+                                    />
+                                ))}
+                                <span className="ml-2 font-medium text-sm text-neutral-900">{review.customerName}</span>
+                                <div className="ml-auto flex items-center gap-2">
+                                    <span className="text-[10px] text-neutral-400 tracking-wider uppercase">{new Date(review.updatedAt).toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}</span>
+                                </div>
                             </div>
+                            <p className="text-sm text-neutral-600 leading-relaxed italic mb-4">"{review.content}"</p>
+                            <ReviewMedia images={review.images || []} video={review.video} />
                         </div>
-                        <p className="text-sm text-neutral-600 leading-relaxed italic mb-4">"{review.content}"</p>
-                        <ReviewMedia images={review.images || []} video={review.video} />
+                    ))}
+                </div>
+            ) : (
+                <div className="py-20 text-center space-y-4 bg-neutral-50/50 rounded-3xl border border-dashed border-neutral-200">
+                    <div className="p-4 bg-white rounded-full w-fit mx-auto shadow-sm">
+                        <Star size={32} className="text-neutral-200" />
                     </div>
-                ))}
-            </div>
+                    <div className="space-y-1">
+                        <p className="text-lg font-serif text-neutral-900">Be the first to review</p>
+                        <p className="text-sm text-neutral-500 max-w-xs mx-auto">Share your experience with this masterpiece and help others make a choice.</p>
+                    </div>
+                    <Button
+                        onClick={() => setIsFormOpen(true)}
+                        className="bg-neutral-900 text-white rounded-full px-8 py-6 h-auto text-xs font-bold uppercase tracking-widest mt-4"
+                    >
+                        WRITE THE FIRST REVIEW
+                    </Button>
+                </div>
+            )}
 
             {hasMore && (
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-8 border-t border-neutral-100">

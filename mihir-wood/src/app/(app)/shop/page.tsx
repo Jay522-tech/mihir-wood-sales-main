@@ -29,9 +29,13 @@ type Props = {
 }
 
 export default async function ShopPage({ searchParams }: Props) {
-  const { q: searchValue, sort, category, page } = await searchParams
+  const { q: searchValue, sort, category, page, featured, isNew, rating, minPrice, maxPrice, material } = await searchParams
   const currentPage = typeof page === 'string' ? parseInt(page) : 1
   const payload = await getPayload({ config: configPromise })
+
+  // Calculate "New" date (30 days ago)
+  const thirtyDaysAgo = new Date()
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
   const products = await payload.find({
     collection: 'products',
@@ -45,48 +49,100 @@ export default async function ShopPage({ searchParams }: Props) {
       gallery: true,
       categories: true,
       priceInINR: true,
+      isFeatured: true,
+      rating: true,
     },
     ...(sort ? { sort } : { sort: 'title' }),
-    ...(searchValue || category
-      ? {
-        where: {
-          and: [
+    where: {
+      and: [
+        {
+          _status: {
+            equals: 'published',
+          },
+        },
+        ...(searchValue
+          ? [
             {
-              _status: {
-                equals: 'published',
-              },
-            },
-            ...(searchValue
-              ? [
+              or: [
                 {
-                  or: [
-                    {
-                      title: {
-                        like: searchValue,
-                      },
-                    },
-                    {
-                      description: {
-                        like: searchValue,
-                      },
-                    },
-                  ],
-                },
-              ]
-              : []),
-            ...(category
-              ? [
-                {
-                  categories: {
-                    contains: category,
+                  title: {
+                    like: searchValue,
                   },
                 },
-              ]
-              : []),
-          ],
-        },
-      }
-      : {}),
+                {
+                  description: {
+                    like: searchValue,
+                  },
+                },
+              ],
+            },
+          ]
+          : []),
+        ...(category
+          ? [
+            {
+              categories: {
+                contains: category,
+              },
+            },
+          ]
+          : []),
+        ...(featured === 'true'
+          ? [
+            {
+              isFeatured: {
+                equals: true,
+              },
+            },
+          ]
+          : []),
+        ...(isNew === 'true'
+          ? [
+            {
+              createdAt: {
+                greater_than_equal: thirtyDaysAgo.toISOString(),
+              },
+            },
+          ]
+          : []),
+        ...(rating
+          ? [
+            {
+              rating: {
+                greater_than_equal: parseInt(rating as string),
+              },
+            },
+          ]
+          : []),
+        ...(minPrice
+          ? [
+            {
+              priceInINR: {
+                greater_than_equal: parseInt(minPrice as string),
+              },
+            },
+          ]
+          : []),
+        ...(maxPrice
+          ? [
+            {
+              priceInINR: {
+                less_than_equal: parseInt(maxPrice as string),
+              },
+            },
+          ]
+          : []),
+        ...(material
+          ? [
+            {
+              'materials.title': {
+                equals: material,
+              },
+            },
+          ]
+          : []),
+      ],
+    },
   })
 
   const { totalDocs, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = products
@@ -98,6 +154,12 @@ export default async function ShopPage({ searchParams }: Props) {
     if (searchValue && typeof searchValue === 'string') params.set('q', searchValue)
     if (sort && typeof sort === 'string') params.set('sort', sort)
     if (category && typeof category === 'string') params.set('category', category)
+    if (featured && typeof featured === 'string') params.set('featured', featured)
+    if (isNew && typeof isNew === 'string') params.set('isNew', isNew)
+    if (rating && typeof rating === 'string') params.set('rating', rating)
+    if (minPrice && typeof minPrice === 'string') params.set('minPrice', minPrice)
+    if (maxPrice && typeof maxPrice === 'string') params.set('maxPrice', maxPrice)
+    if (material && typeof material === 'string') params.set('material', material)
     params.set('page', pageNumber.toString())
     return createUrl('/shop', params)
   }

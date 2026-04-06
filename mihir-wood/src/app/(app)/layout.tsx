@@ -9,7 +9,10 @@ import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
 import { WhatsAppFloatingButton } from '@/components/WhatsAppFloatingButton'
+import { ContactFloatingButton } from '@/components/ContactFloatingButton'
 import { ScrollToTop } from '@/components/ScrollToTop'
 import React from 'react'
 import './globals.css'
@@ -42,6 +45,11 @@ const twitterSite = TWITTER_SITE ? ensureStartsWith(TWITTER_SITE, 'https://') : 
 } */
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
+  const payload = await getPayload({ config: configPromise })
+  const whatsappConfig = await payload.findGlobal({
+    slug: 'whatsapp',
+  })
+
   return (
     <html
       className={[GeistSans.variable, GeistMono.variable].filter(Boolean).join(' ')}
@@ -54,7 +62,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body suppressHydrationWarning>
-        <Providers>
+        <Providers whatsappConfig={whatsappConfig}>
           <AdminBar />
           <LivePreviewListener />
 
@@ -62,6 +70,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <main>{children}</main>
           <Footer />
           <ScrollToTop />
+          <ContactFloatingButton />
           <WhatsAppFloatingButton />
         </Providers>
       </body>

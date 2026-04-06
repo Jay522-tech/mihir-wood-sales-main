@@ -21,11 +21,14 @@ import { Users } from '@/collections/Users'
 import { Reviews } from '@/collections/Reviews'
 import { Posts } from '@/collections/Posts'
 import { Stores } from '@/collections/Stores'
+import { Inquiries } from '@/collections/Inquiries'
 import { Footer } from '@/globals/Footer'
 import { Header } from '@/globals/Header'
 import { Shop } from '@/globals/Shop'
 import { BulkOrder } from '@/globals/BulkOrder'
 import { HomeHero } from '@/globals/HomeHero'
+import { WhatsApp } from '@/globals/WhatsApp'
+import { Contact } from '@/globals/Contact'
 import { plugins } from './plugins'
 
 const filename = fileURLToPath(import.meta.url)
@@ -43,7 +46,7 @@ export default buildConfig({
     },
     user: Users.slug,
   },
-  collections: [Users, Pages, Categories, Media, Reviews, Posts, Stores],
+  collections: [Users, Pages, Categories, Media, Reviews, Posts, Stores, Inquiries],
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
@@ -84,7 +87,7 @@ export default buildConfig({
   }),
   //email: nodemailerAdapter(),
   endpoints: [],
-  globals: [Header, Footer, Shop, BulkOrder, HomeHero],
+  globals: [Header, Footer, Shop, BulkOrder, HomeHero, WhatsApp, Contact],
   plugins,
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

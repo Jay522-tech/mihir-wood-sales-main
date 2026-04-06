@@ -19,11 +19,11 @@ export const Footer: React.FC = async () => {
   })
 
   const {
-    logoText = 'Mihir Wood',
-    tagline = 'Premium teak wood furniture brand for modern homes.',
+    logoText = '',
+    tagline = '',
     socialLinks = [],
     linkGroups = [],
-    contactInfo = { phone: '+91-152 25 300', website: 'www.mihirwood.com' },
+    contactInfo = { phone: '', website: '' },
     copyrightText = `© ${new Date().getFullYear()} Mihir Wood Sales. All rights reserved.`
   } = footer
 

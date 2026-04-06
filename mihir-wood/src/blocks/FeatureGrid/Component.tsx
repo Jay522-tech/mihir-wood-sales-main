@@ -1,5 +1,5 @@
 import type { Media } from '@/payload-types'
-import { Award, Check, Globe, ShieldCheck, Star, Bed, Briefcase, Utensils, Home, PenTool, DollarSign, Hammer, Clock } from 'lucide-react'
+import { Award, Check, Globe, ShieldCheck, Star, Bed, Briefcase, Utensils, Home, PenTool, DollarSign, Hammer, Clock, Phone, Mail, MapPin } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
 
@@ -14,6 +14,9 @@ const iconMap = {
     utensils: Utensils,
     home: Home,
     pentool: PenTool,
+    phone: Phone,
+    mail: Mail,
+    'map-pin': MapPin,
     dollar: DollarSign,
     hammer: Hammer,
     clock: Clock,
@@ -169,11 +172,17 @@ export const FeatureGrid: React.FC<any> = (props) => {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                             <div className="absolute bottom-12 left-12 right-12 text-white space-y-4">
-                                <span className="text-[#D4BC9B] font-black uppercase tracking-widest text-[10px]">The Archive</span>
-                                <h4 className="text-3xl md:text-4xl font-black uppercase tracking-tighter italic">Silent Symphony of Tools</h4>
-                                <p className="max-w-xl text-gray-300 font-light italic">
-                                    Where human hands converse with nature to create objects of profound beauty.
-                                </p>
+                                {props.archiveLabel && (
+                                    <span className="text-[#D4BC9B] font-black uppercase tracking-widest text-[10px]">{props.archiveLabel}</span>
+                                )}
+                                {props.archiveTitle && (
+                                    <h4 className="text-3xl md:text-4xl font-black uppercase tracking-tighter italic">{props.archiveTitle}</h4>
+                                )}
+                                {props.archiveDescription && (
+                                    <p className="max-w-xl text-gray-300 font-light italic">
+                                        {props.archiveDescription}
+                                    </p>
+                                )}
                             </div>
                         </div>
                     )}

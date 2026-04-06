@@ -38,14 +38,16 @@ export const BulkOrderBanner: React.FC<any> = (props) => {
             <div className="container relative z-10 px-4">
                 <div className="max-w-5xl mx-auto text-center space-y-10">
                     {/* Badge */}
-                    <div className="inline-flex items-center gap-3 px-6 py-2 bg-[#4A3F35]/80 border border-white/10 rounded-lg text-white/90 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] backdrop-blur-sm mx-auto shadow-xl">
-                        <Package className="w-3.5 h-3.5" />
-                        <span>Corporate & Bulk Solutions</span>
-                    </div>
+                    {props.badgeText && (
+                        <div className="inline-flex items-center gap-3 px-6 py-2 bg-[#4A3F35]/80 border border-white/10 rounded-lg text-white/90 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] backdrop-blur-sm mx-auto shadow-xl">
+                            <Package className="w-3.5 h-3.5" />
+                            <span>{props.badgeText}</span>
+                        </div>
+                    )}
 
                     {/* Titles */}
                     <div className="space-y-2">
-                        <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white leading-[0.85] uppercase tracking-tighter italic filter drop-shadow-lg">
+                        <h2 className="text-2xl md:text-5xl lg:text-6xl font-black text-white leading-[0.85] uppercase tracking-tighter italic filter drop-shadow-lg">
                             {mainTitle}
                             {subTitle && (
                                 <span className="block text-[#D4BC9B] mt-2">{subTitle}</span>

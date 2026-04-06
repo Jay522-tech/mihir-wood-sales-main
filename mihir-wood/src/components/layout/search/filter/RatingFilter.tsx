@@ -3,15 +3,43 @@
 import React from 'react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
+import clsx from 'clsx'
 
 export const RatingFilter: React.FC = () => {
+    const router = useRouter()
+    const searchParams = useSearchParams()
+    const pathname = usePathname()
+
+    const currentRating = searchParams.get('rating')
+
     const ratings = [5, 4, 3]
+
+    const handleToggle = (rating: number, checked: boolean) => {
+        const params = new URLSearchParams(searchParams.toString())
+
+        if (checked) {
+            params.set('rating', rating.toString())
+        } else {
+            params.delete('rating')
+        }
+
+        // Reset page when filter changes
+        params.delete('page')
+
+        router.push(`${pathname}?${params.toString()}`, { scroll: false })
+    }
 
     return (
         <div className="space-y-3">
             {ratings.map((rating) => (
                 <div key={rating} className="flex items-center space-x-2">
-                    <Checkbox id={`rating-${rating}`} className="border-neutral-300 data-[state=checked]:bg-[#D4BC9B] data-[state=checked]:border-[#D4BC9B]" />
+                    <Checkbox
+                        id={`rating-${rating}`}
+                        checked={currentRating === rating.toString()}
+                        onCheckedChange={(checked) => handleToggle(rating, checked as boolean)}
+                        className="border-neutral-300 data-[state=checked]:bg-[#D4BC9B] data-[state=checked]:border-[#D4BC9B]"
+                    />
                     <Label
                         htmlFor={`rating-${rating}`}
                         className="flex items-center cursor-pointer group"
@@ -27,14 +55,10 @@ export const RatingFilter: React.FC = () => {
                                 </svg>
                             ))}
                         </div>
-                        <span className="text-[11px] text-gray-400 font-bold ml-2">({rating * 3})</span>
+                        <span className="text-[11px] text-gray-800 font-bold ml-2">& up</span>
                     </Label>
                 </div>
             ))}
         </div>
     )
-}
-
-function clsx(...classes: string[]) {
-    return classes.filter(Boolean).join(' ')
 }

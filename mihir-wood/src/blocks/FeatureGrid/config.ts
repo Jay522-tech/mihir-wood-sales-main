@@ -65,6 +65,21 @@ export const FeatureGrid: Block = {
             type: 'upload',
             relationTo: 'media',
         },
+        {
+            name: 'archiveLabel',
+            type: 'text',
+            label: 'Archive Section Label',
+        },
+        {
+            name: 'archiveTitle',
+            type: 'text',
+            label: 'Archive Section Title',
+        },
+        {
+            name: 'archiveDescription',
+            type: 'textarea',
+            label: 'Archive Section Description',
+        },
     ],
     interfaceName: 'FeatureGridBlock',
 }

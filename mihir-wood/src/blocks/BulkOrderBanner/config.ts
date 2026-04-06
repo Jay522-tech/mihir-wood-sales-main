@@ -22,6 +22,12 @@ export const BulkOrderBanner: Block = {
             label: 'Description',
         },
         {
+            name: 'badgeText',
+            type: 'text',
+            defaultValue: 'Corporate & Bulk Solutions',
+            label: 'Badge Text (Top Label)',
+        },
+        {
             name: 'image',
             type: 'upload',
             relationTo: 'media',

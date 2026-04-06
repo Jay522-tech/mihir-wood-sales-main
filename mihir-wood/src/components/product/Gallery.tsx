@@ -94,8 +94,12 @@ export const Gallery: React.FC<Props> = ({ gallery }) => {
               })}
             </CarouselContent>
 
-            <CarouselPrevious className="absolute left-2 md:left-0 md:-translate-x-1/2 h-8 w-8 md:h-10 md:w-10 bg-white/90 hover:bg-white text-neutral-900 border border-neutral-200 shadow-md transition-all focus:ring-0 z-20" />
-            <CarouselNext className="absolute right-2 md:right-0 md:translate-x-1/2 h-8 w-8 md:h-10 md:w-10 bg-white/90 hover:bg-white text-neutral-900 border border-neutral-200 shadow-md transition-all focus:ring-0 z-20" />
+            {gallery.length > 5 && (
+              <>
+                <CarouselPrevious className="absolute left-2 md:left-0 md:-translate-x-1/2 h-8 w-8 md:h-10 md:w-10 bg-white/90 hover:bg-white text-neutral-900 border border-neutral-200 shadow-md transition-all focus:ring-0 z-20" />
+                <CarouselNext className="absolute right-2 md:right-0 md:translate-x-1/2 h-8 w-8 md:h-10 md:w-10 bg-white/90 hover:bg-white text-neutral-900 border border-neutral-200 shadow-md transition-all focus:ring-0 z-20" />
+              </>
+            )}
           </Carousel>
         </div>
       )}

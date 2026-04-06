@@ -11,6 +11,7 @@ import type { Media, Product } from '@/payload-types'
 import { cn } from '@/utilities/cn'
 import { formatProductMessage, getWhatsAppLink } from '@/utilities/whatsapp'
 import { MessageCircle } from 'lucide-react'
+import { Price } from '@/components/Price'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -52,9 +53,8 @@ export const ProductSectionClient: React.FC<ProductSectionClientProps> = ({
     }
 
     const renderProductCard = (product: Product, isCarousel = false) => {
-        const image = (product.meta?.image || (product as any).image) as Media
+        const image = (product.meta?.image || product.gallery?.[0]?.image || (product as any).image) as Media
         const priceVal = product.priceInINR || (product as any).price
-        const price = typeof priceVal === 'number' ? `₹${priceVal.toLocaleString()}` : 'Price on Request'
 
         return (
             <Link
@@ -85,15 +85,15 @@ export const ProductSectionClient: React.FC<ProductSectionClientProps> = ({
                 <div className={cn("flex flex-col gap-1 w-full", isCarousel ? "items-center" : "")}>
                     <h3 className={cn(
                         "font-black text-gray-900 uppercase tracking-tighter italic",
-                        isCarousel ? "text-xl md:text-2xl" : "text-sm md:text-base leading-tight"
+                        isCarousel ? "text-lg md:text-xl lg:text-2xl" : "text-sm md:text-base leading-tight"
                     )}>
                         {product.title}
                     </h3>
 
                     <div className={cn("flex items-center mt-1 w-full", isCarousel ? "justify-center" : "justify-between")}>
-                        <p className="text-base font-bold text-[#D4BC9B] tracking-wide">
-                            {price}
-                        </p>
+                        <div className="text-base font-bold text-[#D4BC9B] tracking-wide">
+                            {typeof priceVal === 'number' ? <Price amount={priceVal} className="m-0 p-0" /> : 'Price on Request'}
+                        </div>
                         {!isCarousel && (
                             <button
                                 onClick={(e) => handleInquiry(e, product)}
@@ -121,7 +121,7 @@ export const ProductSectionClient: React.FC<ProductSectionClientProps> = ({
                             </div>
                         )}
                         {title && (
-                            <h2 className="text-3xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter italic">
+                            <h2 className="text-xl md:text-4xl font-black text-gray-900 uppercase tracking-tighter italic">
                                 {title}
                             </h2>
                         )}

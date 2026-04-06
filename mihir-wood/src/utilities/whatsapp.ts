@@ -1,7 +1,7 @@
-export const WHATSAPP_NUMBER = '+919313405709' // Placeholder - user should update this
+export const WHATSAPP_NUMBER = '' // Removed hardcoded fallback
 
-export const getWhatsAppLink = (message: string) => {
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+export const getWhatsAppLink = (message: string, phoneNumber: string = WHATSAPP_NUMBER) => {
+    return `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`
 }
 
 export const formatCartMessage = (cart: any) => {
@@ -40,18 +40,26 @@ export const formatCartMessage = (cart: any) => {
     return message
 }
 
-export const formatProductMessage = (product: any) => {
-    if (!product) return 'Hello, I would like to inquire about a product.'
+export const formatProductMessage = (product: any, baseMessage?: string) => {
+    if (!product) return baseMessage || 'Hello, I would like to inquire about a product.'
 
     const title = product.title
     const price = product.priceInINR
     const url = `${typeof window !== 'undefined' ? window.location.origin : ''}/products/${product.slug}`
 
-    let message = `Hello, I'm interested in this product: *${title}*\n`
+    // Get the first image from gallery for the admin to see
+    const imageUrl = product.gallery?.[0]?.image?.url
+        ? `${typeof window !== 'undefined' ? window.location.origin : ''}${product.gallery[0].image.url}`
+        : null
+
+    let message = `${baseMessage || "Hello, I'm interested in this product: "}*${title}*\n`
     if (price) {
         message += `Price: ₹${price}\n`
     }
-    message += `Link: ${url}\n\nPlease let me know more details. Thank you!`
+    if (imageUrl) {
+        message += `Image: ${imageUrl}\n`
+    }
+    message += `Please let me know more details. Thank you!\n\nProduct Link: ${url}`
 
     return message
 }

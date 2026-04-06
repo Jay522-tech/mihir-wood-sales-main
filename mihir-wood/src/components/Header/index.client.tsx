@@ -27,7 +27,7 @@ export function HeaderClient({ header, categoryTree }: Props) {
     { label: 'Shop', url: '/shop' },
     { label: 'Custom', url: '/#custom' },
     { label: 'Bulk', url: '/bulk-orders' },
-    { label: 'About', url: '/about' },
+    { label: 'How It Works', url: '/about' },
   ]
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -45,28 +45,31 @@ export function HeaderClient({ header, categoryTree }: Props) {
     <div className="relative z-20 bg-white border-b border-gray-100">
       <nav className="container flex items-center justify-between py-1 min-h-[60px] uppercase tracking-widest text-[11px] font-bold">
         {/* Mobile menu toggle */}
-        <div className="flex items-center md:hidden">
+        <div className={cn("flex items-center md:hidden", isSearchOpen && "hidden")}>
           <Suspense fallback={null}>
-            <MobileMenu menu={menu} />
+            <MobileMenu menu={menu} categoryTree={categoryTree} />
           </Suspense>
         </div>
 
         {/* Logo Section */}
-        <div className="flex items-center flex-none">
+        <div className={cn("flex items-center flex-none", isSearchOpen && "hidden md:flex")}>
           <Link href="/" className="flex items-center group overflow-visible">
             <Image
               src="/images/logo.png"
               alt="Mihir Wood"
               width={440}
               height={250}
-              className="h-14 md:h-16 w-auto object-contain transition-transform group-hover:scale-[2.4] -my-6 scale-[2.2] origin-left"
+              className={cn(
+                "h-14 md:h-16 w-auto object-contain transition-transform group-hover:scale-[2.4] -my-6 origin-left transition-all duration-300",
+                isSearchOpen ? "scale-[1.2] md:scale-[1.5]" : "scale-[2.2]"
+              )}
               priority
             />
           </Link>
         </div>
 
         {/* Center Navigation / Search Bar */}
-        <div className="flex-1 flex justify-center px-4 md:px-12 max-w-4xl transition-all duration-300">
+        <div className={cn("flex-1 flex justify-center transition-all duration-300", isSearchOpen ? "px-0 md:px-24 lg:px-32 mx-auto max-w-[1400px]" : "px-2 md:px-6 lg:px-12 max-w-3xl")}>
           {isSearchOpen ? (
             <form onSubmit={handleSearchSubmit} className="w-full flex items-center gap-3 animate-in fade-in slide-in-from-right-4 duration-500">
               <div className="relative flex-grow">
@@ -77,7 +80,7 @@ export function HeaderClient({ header, categoryTree }: Props) {
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   onBlur={() => !searchValue && setIsSearchOpen(false)}
-                  className="w-full bg-neutral-50 border border-[#D4BC9B] rounded-full px-8 py-2.5 text-[10px] font-black tracking-[0.3em] text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#D4BC9B] transition-all shadow-sm"
+                  className="w-full bg-neutral-50 border border-[#D4BC9B] rounded-full px-8 py-2.5 md:py-3 text-[10px] md:text-[11px] font-black tracking-[0.25em] md:tracking-[0.3em] lg:tracking-[0.4em] text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#D4BC9B] transition-all shadow-sm"
                 />
                 <button type="submit" className="absolute right-6 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-[#D4BC9B] transition-colors">
                   <Search className="w-4.5 h-4.5 stroke-[2.5]" />
@@ -92,7 +95,7 @@ export function HeaderClient({ header, categoryTree }: Props) {
               </button>
             </form>
           ) : (
-            <ul className="hidden lg:flex items-center gap-10 h-full">
+            <ul className="hidden md:flex items-center gap-6 lg:gap-10 h-full">
               {hardcodedMenu.map((item) => (
                 <li key={item.label} className={cn("flex items-center h-full", item.label === 'Shop' ? 'group/shop' : '')}>
                   <Link

@@ -79,6 +79,7 @@ export interface Config {
     reviews: Review;
     posts: Post;
     stores: Store;
+    inquiries: Inquiry;
     forms: Form;
     'form-submissions': FormSubmission;
     addresses: Address;
@@ -115,6 +116,7 @@ export interface Config {
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     stores: StoresSelect<false> | StoresSelect<true>;
+    inquiries: InquiriesSelect<false> | InquiriesSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     addresses: AddressesSelect<false> | AddressesSelect<true>;
@@ -140,6 +142,8 @@ export interface Config {
     shop: Shop;
     'bulk-order': BulkOrder;
     'home-hero': HomeHero;
+    whatsapp: Whatsapp;
+    contact: Contact;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
@@ -147,6 +151,8 @@ export interface Config {
     shop: ShopSelect<false> | ShopSelect<true>;
     'bulk-order': BulkOrderSelect<false> | BulkOrderSelect<true>;
     'home-hero': HomeHeroSelect<false> | HomeHeroSelect<true>;
+    whatsapp: WhatsappSelect<false> | WhatsappSelect<true>;
+    contact: ContactSelect<false> | ContactSelect<true>;
   };
   locale: null;
   widgets: {
@@ -501,7 +507,7 @@ export interface Page {
   title: string;
   publishedOn?: string | null;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'slider' | 'haveli';
+    type: 'none' | 'lowImpact' | 'banner';
     subTitle?: string | null;
     richText?: {
       root: {
@@ -541,7 +547,11 @@ export interface Page {
     speed?: number | null;
     slides?:
       | {
+          contentAlignment?: ('left' | 'center' | 'right') | null;
+          title?: string | null;
+          titleColor?: string | null;
           subTitle?: string | null;
+          subTitleColor?: string | null;
           richText?: {
             root: {
               type: string;
@@ -557,6 +567,7 @@ export interface Page {
             };
             [k: string]: unknown;
           } | null;
+          descriptionColor?: string | null;
           links?:
             | {
                 link: {
@@ -576,7 +587,9 @@ export interface Page {
                 id?: string | null;
               }[]
             | null;
-          media: string | Media;
+          image?: (string | null) | Media;
+          buttonBackgroundColor?: string | null;
+          buttonTextColor?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -672,7 +685,34 @@ export interface Page {
     | CarouselBlock
     | ThreeItemGridBlock
     | BannerBlock
+    | {
+        title: string;
+        subtitle: string;
+        chapters?:
+          | {
+              title: string;
+              content: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'brandHeritage';
+      }
     | FormBlock
+    | {
+        items?:
+          | {
+              icon: 'phone' | 'map-pin' | 'clock';
+              label: string;
+              content: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'contactInfoGrid';
+      }
     | ReviewsBlock
     | BlogArchiveBlock
     | StoreArchiveBlock
@@ -688,6 +728,11 @@ export interface Page {
     | FeatureGridBlock
     | ProjectShowcaseBlock
     | ProjectProcessBlock
+    | BulkOrderStatsBlock
+    | OneStopShopBlock
+    | HowItWorksBlock
+    | CustomizationOptionsBlock
+    | FAQBlockConfig
   )[];
   meta?: {
     title?: string | null;
@@ -1220,6 +1265,16 @@ export interface InquirySectionBlock {
   variant?: ('default' | 'simple') | null;
   description?: string | null;
   image?: (string | null) | Media;
+  /**
+   * Enter the Google Maps embed URL to show a map instead of the image (Only works with "Project Quote" variant).
+   */
+  mapUrl?: string | null;
+  testimonial?: {
+    name?: string | null;
+    role?: string | null;
+    text?: string | null;
+    image?: (string | null) | Media;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'inquirySection';
@@ -1232,6 +1287,7 @@ export interface BulkOrderBannerBlock {
   title?: string | null;
   highlightText?: string | null;
   description?: string | null;
+  badgeText?: string | null;
   image: string | Media;
   links?:
     | {
@@ -1367,6 +1423,9 @@ export interface FeatureGridBlock {
   variant?: ('default' | 'cards' | 'whyChooseUs') | null;
   isDark?: boolean | null;
   image?: (string | null) | Media;
+  archiveLabel?: string | null;
+  archiveTitle?: string | null;
+  archiveDescription?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'featureGrid';
@@ -1413,6 +1472,147 @@ export interface ProjectProcessBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'projectProcess';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BulkOrderStatsBlock".
+ */
+export interface BulkOrderStatsBlock {
+  mainTitle?: string | null;
+  mainSubtitle?: string | null;
+  title: string;
+  subtitle: string;
+  stats?:
+    | {
+        icon: 'users' | 'truck' | 'shield' | 'pen-tool' | 'factory' | 'ruler';
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: string | Page;
+          } | null;
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  image: string | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bulkOrderStats';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OneStopShopBlock".
+ */
+export interface OneStopShopBlock {
+  title: string;
+  subtitle?: string | null;
+  categories?:
+    | {
+        image: string | Media;
+        title: string;
+        items?:
+          | {
+              item: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: string | Page;
+          } | null;
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'oneStopShop';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HowItWorksBlock".
+ */
+export interface HowItWorksBlock {
+  title: string;
+  subtitle?: string | null;
+  steps?:
+    | {
+        image: string | Media;
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  contactText?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'howItWorks';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CustomizationOptionsBlock".
+ */
+export interface CustomizationOptionsBlock {
+  title: string;
+  subtitle?: string | null;
+  options?:
+    | {
+        image: string | Media;
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'customizationOptions';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlockConfig".
+ */
+export interface FAQBlockConfig {
+  title: string;
+  description?: string | null;
+  questions?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faqBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1577,6 +1777,19 @@ export interface Address {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiries".
+ */
+export interface Inquiry {
+  id: string;
+  name: string;
+  phoneNumber: string;
+  requirements: string;
+  status?: ('new' | 'contacted' | 'closed') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
@@ -1643,6 +1856,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'stores';
         value: string | Store;
+      } | null)
+    | ({
+        relationTo: 'inquiries';
+        value: string | Inquiry;
       } | null)
     | ({
         relationTo: 'forms';
@@ -1786,8 +2003,13 @@ export interface PagesSelect<T extends boolean = true> {
         slides?:
           | T
           | {
+              contentAlignment?: T;
+              title?: T;
+              titleColor?: T;
               subTitle?: T;
+              subTitleColor?: T;
               richText?: T;
+              descriptionColor?: T;
               links?:
                 | T
                 | {
@@ -1803,7 +2025,9 @@ export interface PagesSelect<T extends boolean = true> {
                         };
                     id?: T;
                   };
-              media?: T;
+              image?: T;
+              buttonBackgroundColor?: T;
+              buttonTextColor?: T;
               id?: T;
             };
       };
@@ -1817,7 +2041,36 @@ export interface PagesSelect<T extends boolean = true> {
         carousel?: T | CarouselBlockSelect<T>;
         threeItemGrid?: T | ThreeItemGridBlockSelect<T>;
         banner?: T | BannerBlockSelect<T>;
+        brandHeritage?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              chapters?:
+                | T
+                | {
+                    title?: T;
+                    content?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
         formBlock?: T | FormBlockSelect<T>;
+        contactInfoGrid?:
+          | T
+          | {
+              items?:
+                | T
+                | {
+                    icon?: T;
+                    label?: T;
+                    content?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
         reviews?: T | ReviewsBlockSelect<T>;
         blogArchive?: T | BlogArchiveBlockSelect<T>;
         storeArchive?: T | StoreArchiveBlockSelect<T>;
@@ -1833,6 +2086,11 @@ export interface PagesSelect<T extends boolean = true> {
         featureGrid?: T | FeatureGridBlockSelect<T>;
         projectShowcase?: T | ProjectShowcaseBlockSelect<T>;
         projectProcess?: T | ProjectProcessBlockSelect<T>;
+        bulkOrderStats?: T | BulkOrderStatsBlockSelect<T>;
+        oneStopShop?: T | OneStopShopBlockSelect<T>;
+        howItWorks?: T | HowItWorksBlockSelect<T>;
+        customizationOptions?: T | CustomizationOptionsBlockSelect<T>;
+        faqBlock?: T | FAQBlockConfigSelect<T>;
       };
   meta?:
     | T
@@ -2075,6 +2333,15 @@ export interface InquirySectionBlockSelect<T extends boolean = true> {
   variant?: T;
   description?: T;
   image?: T;
+  mapUrl?: T;
+  testimonial?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        text?: T;
+        image?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -2086,6 +2353,7 @@ export interface BulkOrderBannerBlockSelect<T extends boolean = true> {
   title?: T;
   highlightText?: T;
   description?: T;
+  badgeText?: T;
   image?: T;
   links?:
     | T
@@ -2179,6 +2447,9 @@ export interface FeatureGridBlockSelect<T extends boolean = true> {
   variant?: T;
   isDark?: T;
   image?: T;
+  archiveLabel?: T;
+  archiveTitle?: T;
+  archiveDescription?: T;
   id?: T;
   blockName?: T;
 }
@@ -2215,6 +2486,134 @@ export interface ProjectProcessBlockSelect<T extends boolean = true> {
         title?: T;
         description?: T;
         image?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BulkOrderStatsBlock_select".
+ */
+export interface BulkOrderStatsBlockSelect<T extends boolean = true> {
+  mainTitle?: T;
+  mainSubtitle?: T;
+  title?: T;
+  subtitle?: T;
+  stats?:
+    | T
+    | {
+        icon?: T;
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OneStopShopBlock_select".
+ */
+export interface OneStopShopBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  categories?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              item?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HowItWorksBlock_select".
+ */
+export interface HowItWorksBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  steps?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  contactText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CustomizationOptionsBlock_select".
+ */
+export interface CustomizationOptionsBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  options?:
+    | T
+    | {
+        image?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlockConfig_select".
+ */
+export interface FAQBlockConfigSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  questions?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
         id?: T;
       };
   id?: T;
@@ -2307,6 +2706,18 @@ export interface StoresSelect<T extends boolean = true> {
         longitude?: T;
       };
   image?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiries_select".
+ */
+export interface InquiriesSelect<T extends boolean = true> {
+  name?: T;
+  phoneNumber?: T;
+  requirements?: T;
+  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2867,6 +3278,7 @@ export interface BulkOrder {
  */
 export interface HomeHero {
   id: string;
+  contentAlignment?: ('left' | 'center' | 'right') | null;
   title?: string | null;
   subTitle?: string | null;
   image: string | Media;
@@ -2879,6 +3291,41 @@ export interface HomeHero {
         id?: string | null;
       }[]
     | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "whatsapp".
+ */
+export interface Whatsapp {
+  id: string;
+  /**
+   * Format: +91XXXXXXXXXX
+   */
+  phoneNumber: string;
+  callToOrderNumber?: string | null;
+  defaultMessage?: string | null;
+  /**
+   * This will be prepended to the product title and link.
+   */
+  productInquiryMessage?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact".
+ */
+export interface Contact {
+  id: string;
+  phone?: string | null;
+  address?: string | null;
+  timing?: string | null;
+  /**
+   * This map URL will be used across the site if not overridden.
+   */
+  mapUrl?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3000,6 +3447,7 @@ export interface BulkOrderSelect<T extends boolean = true> {
  * via the `definition` "home-hero_select".
  */
 export interface HomeHeroSelect<T extends boolean = true> {
+  contentAlignment?: T;
   title?: T;
   subTitle?: T;
   image?: T;
@@ -3014,6 +3462,32 @@ export interface HomeHeroSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "whatsapp_select".
+ */
+export interface WhatsappSelect<T extends boolean = true> {
+  phoneNumber?: T;
+  callToOrderNumber?: T;
+  defaultMessage?: T;
+  productInquiryMessage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact_select".
+ */
+export interface ContactSelect<T extends boolean = true> {
+  phone?: T;
+  address?: T;
+  timing?: T;
+  mapUrl?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

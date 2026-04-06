@@ -37,7 +37,6 @@ const PrivacyPage = async () => {
     return (
         <article className="!bg-[#FAF9F6] min-h-[80vh] !text-gray-900 py-20 animate-fade-in-up">
             <div className="container max-w-4xl px-4 prose prose-invert:!text-gray-900 prose-headings:!text-black prose-headings:!font-black prose-p:!text-gray-800 prose-li:!text-gray-800 prose-strong:!text-black prose-strong:!font-black">
-                <RenderHero {...page.hero as any} />
                 <RenderBlocks blocks={page.layout as any} />
             </div>
         </article>

@@ -61,13 +61,11 @@ export default async function HomePage() {
             })
 
             if (homeHeroGlobal && homePage?.hero) {
-                homePage.hero.subTitle = homeHeroGlobal.subTitle
-                homePage.hero.media = homeHeroGlobal.image
-                homePage.hero.links = homeHeroGlobal.links
-                // For richText title, we wrap it in the required structure if it's just a string,
-                // or just update it if the user provided one.
+                homePage.hero.type = 'banner'
+
+                let slideRichText = null;
                 if (homeHeroGlobal.title) {
-                    (homePage.hero as any).richText = {
+                    slideRichText = {
                         root: {
                             type: 'root',
                             children: [
@@ -82,6 +80,17 @@ export default async function HomePage() {
                         },
                     }
                 }
+
+                homePage.hero.slides = [
+                    {
+                        title: homeHeroGlobal.title,
+                        subTitle: homeHeroGlobal.subTitle,
+                        image: homeHeroGlobal.image,
+                        links: homeHeroGlobal.links,
+                        contentAlignment: homeHeroGlobal.contentAlignment || 'left',
+                        richText: slideRichText,
+                    }
+                ]
             }
 
             // 2. Fetch real products for the productSection

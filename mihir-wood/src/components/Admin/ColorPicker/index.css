@@ -1,0 +1,80 @@
+.color-picker-field {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.color-picker-field .label-wrapper {
+    margin-bottom: 8px;
+}
+
+.color-picker-field .field-label {
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 400;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.color-picker-field .required {
+    color: #ff0000;
+    margin-left: 4px;
+}
+
+.color-picker-container {
+    position: relative;
+    width: 100%;
+}
+
+.color-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.color-input-wrapper:hover {
+    border-color: #555;
+}
+
+.color-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.color-input {
+    background: transparent !important;
+    color: #fff !important;
+    border: none !important;
+    font-family: monospace;
+    font-size: 13px;
+    outline: none !important;
+    width: 100%;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.picker-popover {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    z-index: 100;
+    padding: 10px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.react-colorful {
+    width: 200px !important;
+    height: 180px !important;
+}

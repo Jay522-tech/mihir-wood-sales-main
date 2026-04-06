@@ -54,11 +54,12 @@ export function FilterList({
             {/* Materials Section */}
             <FilterSection title="Materials">
               <CheckboxFilter
+                paramName="material"
                 items={[
-                  { id: 'sheesham', label: 'Sheesham' },
-                  { id: 'teak', label: 'Teak' },
-                  { id: 'mahogany', label: 'Mahogany' },
-                  { id: 'other', label: 'Other' }
+                  { id: 'Teak Wood', label: 'Teak Wood' },
+                  { id: 'Rose Wood', label: 'Rose Wood' },
+                  { id: 'Natural Teak', label: 'Natural Teak' },
+                  { id: 'Ash Wood', label: 'Ash Wood' }
                 ]}
               />
             </FilterSection>

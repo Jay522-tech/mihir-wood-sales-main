@@ -189,112 +189,11 @@ export default async function ProductPage({ params }: Args) {
     limit: 100,
   })
 
-  let reviews: any[] = reviewsResult.docs
+  const reviews: any[] = reviewsResult.docs
   const totalReviews = reviewsResult.totalDocs || 0
   const averageRating = totalReviews > 0
     ? reviews.reduce((acc, review) => acc + (review.rating || 0), 0) / totalReviews
     : 0
-
-  if (reviews.length === 0) {
-    reviews = [
-      {
-        id: 'dummy-1',
-        customerName: 'Aarav Sharma',
-        rating: 5,
-        content: 'The craftsmanship of this Sheesham wood cabinet is absolutely breathtaking. It adds a touch of royal elegance to my living room. Highly recommended!',
-        updatedAt: new Date().toISOString(),
-        createdAt: new Date().toISOString(),
-        images: [
-          {
-            url: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=2070&auto=format&fit=crop',
-            alt: 'Royal Living Room',
-          },
-          {
-            url: 'https://images.unsplash.com/photo-1594026112284-02bb6f3352fe?q=80&w=2070&auto=format&fit=crop',
-            alt: 'Wood Texture',
-          }
-        ] as any,
-      },
-      {
-        id: 'dummy-2',
-        customerName: 'Priya Patel',
-        rating: 4,
-        content: 'Beautiful design and very sturdy. The natural finish is exactly what I was looking for. The delivery was also very prompt and the packaging was excellent.',
-        updatedAt: new Date().toISOString(),
-        createdAt: new Date().toISOString(),
-        images: [
-          {
-            url: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=2069&auto=format&fit=crop',
-            alt: 'Modern Interior',
-          }
-        ] as any,
-        video: {
-          url: 'https://cdn.pixabay.com/video/2016/09/21/5301-183492582_large.mp4',
-          alt: 'Product Video Preview',
-        } as any,
-      },
-      {
-        id: 'dummy-3',
-        customerName: 'Vikram Singh',
-        rating: 5,
-        content: 'Exceeded my expectations! The intricate carvings are even more detailed in person. A true masterpiece from Mihir Wood Works.',
-        updatedAt: new Date().toISOString(),
-        createdAt: new Date().toISOString(),
-        images: [
-          {
-            url: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=2000&auto=format&fit=crop',
-            alt: 'Carving Detail',
-          },
-          {
-            url: 'https://images.unsplash.com/photo-1611269154421-4e27233ac5c7?q=80&w=1965&auto=format&fit=crop',
-            alt: 'Furniture Setup',
-          }
-        ] as any,
-      },
-      {
-        id: 'dummy-4',
-        customerName: 'Siddharth Jain',
-        rating: 5,
-        content: 'I am amazed by the quality. The wood is premium and the finish is flawless. It was well worth the wait. Highly recommended for anyone looking for authentic wood furniture.',
-        updatedAt: new Date().toISOString(),
-        createdAt: new Date().toISOString(),
-        images: [
-          {
-            url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=2070&auto=format&fit=crop',
-            alt: 'Premium Furniture',
-          }
-        ] as any,
-      },
-      {
-        id: 'dummy-5',
-        customerName: 'Ananya Rao',
-        rating: 4,
-        content: 'The piece is lovely and exactly as described. One minor delay in shipping but the customer support was very helpful. Overall a great experience.',
-        updatedAt: new Date().toISOString(),
-        createdAt: new Date().toISOString(),
-        images: [
-          {
-            url: 'https://images.unsplash.com/photo-1592078615290-033ee584e267?q=80&w=1964&auto=format&fit=crop',
-            alt: 'Living Room Setup',
-          }
-        ] as any,
-      },
-      {
-        id: 'dummy-6',
-        customerName: 'Rohan Mehta',
-        rating: 5,
-        content: 'Top notch quality and service! Mihir Wood Works really understands the customer needs. The customisations I requested were executed perfectly.',
-        updatedAt: new Date().toISOString(),
-        createdAt: new Date().toISOString(),
-        images: [
-          {
-            url: 'https://images.unsplash.com/photo-1594026112284-02bb6f3352fe?q=80&w=2070&auto=format&fit=crop',
-            alt: 'Custom Woodwork',
-          }
-        ] as any,
-      }
-    ] as any
-  }
 
   return (
     <div className="bg-[#FDFBF7] min-h-screen">
@@ -343,81 +242,62 @@ export default async function ProductPage({ params }: Args) {
             </div>
 
             {/* Product Information */}
-            <div className="order-4 w-full pt-4 md:pt-8 space-y-6 md:space-y-8">
-              <h2 className="text-2xl md:text-3xl font-serif text-neutral-900 border-b border-neutral-100 pb-6 uppercase tracking-tight">Product Story</h2>
-              <div className="prose prose-neutral max-w-none text-neutral-600 leading-relaxed italic text-base md:text-lg">
+            <div className="order-4 w-full pt-4 md:pt-8 space-y-2">
+              <h2 className="text-2xl md:text-3xl font-serif text-neutral-900 border-b border-neutral-100 pb-4 uppercase tracking-tight">Product Story</h2>
+              <div className="prose prose-neutral max-w-none text-neutral-900 prose-p:text-neutral-900 leading-relaxed italic text-base md:text-lg [&_p:empty]:hidden [&_p:has(>br:only-child)]:hidden">
                 {product.description && <RichText data={product.description} enableGutter={false} />}
-                <ul className="not-italic space-y-3 mt-6">
-                  {(product.storyBullets?.length ? product.storyBullets.map(b => b.bullet) : [
-                    'Solid Sheesham wood construction',
-                    'Intricate hand-carved Haveli-inspired design',
-                    'Two cabinet doors with spacious internal storage',
-                    'Hand-polished with premium finishes',
-                    'Ideal for adding luxurious, timeless elegance to your home.'
-                  ]).map((item, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <span className="text-[#D4BC9B] mt-1.5">•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+                {product.storyBullets && product.storyBullets.length > 0 && (
+                  <ul className="not-italic space-y-3 mt-6">
+                    {product.storyBullets.map((b, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <span className="text-[#D4BC9B] mt-1.5">•</span>
+                        <span>{b.bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
 
             {/* Product Materials */}
-            <div className="order-5 w-full space-y-6 md:space-y-8">
-              <h2 className="text-2xl md:text-3xl font-serif text-neutral-900 border-b border-neutral-100 pb-6 uppercase tracking-tight">Exquisite Materials</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
-                {(product.materials?.length ? product.materials : [
-                  { title: 'Solid Sheesham Wood', icon: 'Trophy', description: 'Premium Hardwood' },
-                  { title: 'Natural Finishes', icon: 'CheckCircle2', description: 'Eco-polished' },
-                  { title: 'Premium Photos', icon: 'ShieldCheck', description: 'Exact product' }
-                ]).map((item, i) => {
-                  const Icon = IconMap[item.icon as keyof typeof IconMap] || LucideIcons.Package
-                  return (
-                    <div key={i} className="bg-white p-6 rounded-xl border border-neutral-100 flex flex-col items-center text-center gap-3">
-                      <div className="text-[#D4BC9B]">
-                        <Icon size={24} />
+            {product.materials && product.materials.length > 0 && (
+              <div className="order-5 w-full space-y-6 md:space-y-8">
+                <h2 className="text-2xl md:text-3xl font-serif text-neutral-900 border-b border-neutral-100 pb-6 uppercase tracking-tight">Exquisite Materials</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
+                  {product.materials.map((item, i) => {
+                    const Icon = IconMap[item.icon as keyof typeof IconMap] || LucideIcons.Package
+                    return (
+                      <div key={i} className="bg-white p-6 rounded-xl border border-neutral-100 flex flex-col items-center text-center gap-3">
+                        <div className="text-[#D4BC9B]">
+                          <Icon size={24} />
+                        </div>
+                        <div className="space-y-1">
+                          <h3 className="font-serif text-sm text-neutral-900">{(item as any).title}</h3>
+                          <p className="text-[10px] text-neutral-400 uppercase tracking-widest">{(item as any).description}</p>
+                        </div>
                       </div>
-                      <div className="space-y-1">
-                        <h3 className="font-serif text-sm text-neutral-900">{(item as any).title}</h3>
-                        <p className="text-[10px] text-neutral-400 uppercase tracking-widest">{(item as any).description}</p>
-                      </div>
-                    </div>
-                  )
-                })}
+                    )
+                  })}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Terms & Conditions */}
-            <div className="order-6 w-full space-y-6">
-              <h2 className="text-xl md:text-2xl font-serif text-neutral-900 border-b border-neutral-200 pb-4">Terms & Conditions</h2>
-              <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4">
-                {(product.trustStats?.length ? product.trustStats : [
-                  { value: '2.2k+', label: 'Projects' },
-                  { value: '15+', label: 'Years' },
-                  { value: '40+', label: 'Cities' },
-                  { value: product.warranty || '5', label: 'Warranty' }
-                ]).map((stat, i) => (
-                  <div key={i} className="bg-white p-4 md:p-6 rounded-xl border border-neutral-100 flex flex-col items-center text-center gap-1">
-                    <span className="text-xl md:text-2xl font-serif text-[#D4BC9B]">{(stat as any).value}</span>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-neutral-400">{(stat as any).label}</span>
-                  </div>
-                ))}
+            {product.trustStats && product.trustStats.length > 0 && (
+              <div className="order-6 w-full space-y-6">
+                <h2 className="text-xl md:text-2xl font-serif text-neutral-900 border-b border-neutral-200 pb-4">Terms & Conditions</h2>
+                <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4">
+                  {product.trustStats.map((stat, i) => (
+                    <div key={i} className="bg-white p-4 md:p-6 rounded-xl border border-neutral-100 flex flex-col items-center text-center gap-1">
+                      <span className="text-xl md:text-2xl font-serif text-[#D4BC9B]">{(stat as any).value}</span>
+                      <span className="text-[9px] font-black uppercase tracking-widest text-neutral-400">{(stat as any).label}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* Why Customers Trust Us Form Placeholder */}
-            <div className="order-7 w-full bg-neutral-50 rounded-2xl p-8 space-y-6 border border-neutral-100">
-              <div className="text-center md:text-left space-y-2">
-                <h2 className="text-2xl font-serif text-neutral-900">Why Customers Trust Us</h2>
-                <p className="text-sm text-neutral-500 italic">Got questions? We&apos;re here to help.</p>
-              </div>
-              <div className="grid grid-cols-1 gap-4">
-                <input type="text" placeholder="Your Name" className="w-full h-12 px-6 rounded-full border border-neutral-200 bg-white text-sm focus:outline-none focus:ring-1 ring-[#D4BC9B]" />
-                <Button className="w-full h-12 bg-[#D4BC9B] text-white rounded-full font-black uppercase tracking-widest hover:bg-black transition-colors">Submit Request</Button>
-              </div>
-            </div>
+
           </div>
 
           {/* Right Column Group */}

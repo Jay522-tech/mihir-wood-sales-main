@@ -6,7 +6,6 @@ import { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
-import { defaultBulkOrdersPage } from '../page-fallback'
 
 export async function generateMetadata(): Promise<Metadata> {
     let page = await queryPage('bulk')

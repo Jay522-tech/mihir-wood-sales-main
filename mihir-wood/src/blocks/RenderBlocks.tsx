@@ -1,16 +1,18 @@
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { AsymmetricalContent } from '@/blocks/AsymmetricalContent/Component'
 import { BannerBlock } from '@/blocks/Banner/Component'
+import { BrandHeritage } from '@/blocks/BrandHeritage/Component'
 import { BlogArchive } from '@/blocks/BlogArchive/Component'
 import { BulkOrderBanner } from '@/blocks/BulkOrderBanner/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { CarouselBlock } from '@/blocks/Carousel/Component'
 import { CategoryCircles } from '@/blocks/CategoryCircles/Component'
-import { CategoryGrid } from '@/blocks/CategoryGrid/Component'
+
 import { ContentBlock } from '@/blocks/Content/Component'
 import { CustomFurniture } from '@/blocks/CustomFurniture/Component'
 import { FeatureGrid } from '@/blocks/FeatureGrid/Component'
 import { FormBlock } from '@/blocks/Form/Component'
+import { ContactInfoGrid } from '@/blocks/ContactInfoGrid/Component'
 import { InquirySection } from '@/blocks/InquirySection/Component'
 import { ManufacturingProcess } from '@/blocks/ManufacturingProcess/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
@@ -22,6 +24,11 @@ import { ReviewsSection } from '@/blocks/ReviewsSection/Component'
 import { StoreArchive } from '@/blocks/StoreArchive/Component'
 import { ThreeItemGridBlock } from '@/blocks/ThreeItemGrid/Component'
 import { TrustStats } from '@/blocks/TrustStats/Component'
+import { BulkOrderStatsComponent } from '@/blocks/BulkOrderStats/Component'
+import { OneStopShopComponent } from '@/blocks/OneStopShop/Component'
+import { HowItWorksComponent } from '@/blocks/HowItWorks/Component'
+import { CustomizationOptionsComponent } from '@/blocks/CustomizationOptions/Component'
+import { FAQBlockComponent } from '@/blocks/FAQBlock/Component'
 import { toKebabCase } from '@/utilities/toKebabCase'
 import React, { Fragment } from 'react'
 
@@ -30,13 +37,15 @@ import type { Page } from '../payload-types'
 const blockComponents = {
   archive: ArchiveBlock,
   banner: BannerBlock,
+  brandHeritage: BrandHeritage,
   carousel: CarouselBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,
+  contactInfoGrid: ContactInfoGrid,
   mediaBlock: MediaBlock,
   threeItemGrid: ThreeItemGridBlock,
-  categoryGrid: CategoryGrid,
+
   reviews: Reviews,
   blogArchive: BlogArchive,
   storeArchive: StoreArchive,
@@ -52,6 +61,11 @@ const blockComponents = {
   featureGrid: FeatureGrid,
   projectShowcase: ProjectShowcase,
   projectProcess: ProjectProcess,
+  bulkOrderStats: BulkOrderStatsComponent,
+  oneStopShop: OneStopShopComponent,
+  howItWorks: HowItWorksComponent,
+  customizationOptions: CustomizationOptionsComponent,
+  faqBlock: FAQBlockComponent,
 }
 
 export const RenderBlocks: React.FC<{

@@ -40,14 +40,16 @@ const queryPage = async (slug: string) => {
 const Page = async () => {
     const page = await queryPage('about')
 
-    if (!page) {
+    const pageData = page || defaultAboutPage
+
+    if (!pageData) {
         return notFound()
     }
 
     return (
         <article>
-            <RenderHero {...page.hero as any} />
-            <RenderBlocks blocks={page.layout as any} />
+            <RenderHero {...(pageData.hero as any)} />
+            <RenderBlocks blocks={pageData.layout as any} />
         </article>
     )
 }

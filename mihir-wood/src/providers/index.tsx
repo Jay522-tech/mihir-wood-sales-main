@@ -16,49 +16,54 @@ const INR: Currency = {
   symbol: '₹',
 }
 
+import { WhatsAppProvider } from './WhatsApp'
+
 export const Providers: React.FC<{
+  whatsappConfig: any
   children: React.ReactNode
-}> = ({ children }) => {
+}> = ({ whatsappConfig, children }) => {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <HeaderThemeProvider>
-          <SonnerProvider />
-          <EcommerceProvider
-            enableVariants={true}
-            api={{
-              cartsFetchQuery: {
-                depth: 2,
-                populate: {
-                  products: {
-                    slug: true,
-                    title: true,
-                    gallery: true,
-                    inventory: true,
-                    priceInINR: true,
-                  },
-                  variants: {
-                    title: true,
-                    inventory: true,
-                    priceInINR: true,
+    <WhatsAppProvider config={whatsappConfig}>
+      <ThemeProvider>
+        <AuthProvider>
+          <HeaderThemeProvider>
+            <SonnerProvider />
+            <EcommerceProvider
+              enableVariants={true}
+              api={{
+                cartsFetchQuery: {
+                  depth: 2,
+                  populate: {
+                    products: {
+                      slug: true,
+                      title: true,
+                      gallery: true,
+                      inventory: true,
+                      priceInINR: true,
+                    },
+                    variants: {
+                      title: true,
+                      inventory: true,
+                      priceInINR: true,
+                    },
                   },
                 },
-              },
-            }}
-            currenciesConfig={{
-              defaultCurrency: 'INR',
-              supportedCurrencies: [INR],
-            }}
-            paymentMethods={[
-              stripeAdapterClient({
-                publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
-              }),
-            ]}
-          >
-            {children}
-          </EcommerceProvider>
-        </HeaderThemeProvider>
-      </AuthProvider>
-    </ThemeProvider>
+              }}
+              currenciesConfig={{
+                defaultCurrency: 'INR',
+                supportedCurrencies: [INR],
+              }}
+              paymentMethods={[
+                stripeAdapterClient({
+                  publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '',
+                }),
+              ]}
+            >
+              {children}
+            </EcommerceProvider>
+          </HeaderThemeProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </WhatsAppProvider>
   )
 }
