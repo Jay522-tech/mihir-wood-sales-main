@@ -1,14 +1,13 @@
+'use client'
 import React from 'react'
+import '../Admin/admin-custom.css'
 
 export const BeforeLogin: React.FC = () => {
   return (
-    <div>
-      <p>
-        <b>Welcome to your dashboard!</b>
-        {' This is where site admins will log in to manage your store. Customers will need to '}
-        <a href={`${process.env.PAYLOAD_PUBLIC_SERVER_URL}/login`}>log in to the site instead</a>
-        {' to access their user account, order history, and more.'}
-      </p>
+    <div className="custom-login-header">
+      <h2 style={{ color: '#D4BC9B', textAlign: 'center', marginBottom: '1.5rem', fontWeight: 'bold' }}>
+        Admin Login
+      </h2>
     </div>
   )
 }

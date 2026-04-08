@@ -39,32 +39,29 @@ export default async function HomePage() {
                 }
             }
 
-            // 2. Fetch Bulk Order Global and inject into banner
-            const bulkOrderGlobal = await (payload as any).findGlobal({
-                slug: 'bulk-order',
+            // 2. Fetch All Banners Global and inject into banner
+            const allBannersGlobal = await (payload as any).findGlobal({
+                slug: 'all-banners',
             })
 
-            if (bulkOrderGlobal) {
+            if (allBannersGlobal?.bulkOrder) {
                 const bulkBlock: any = homePage?.layout?.find((b: any) => b.blockType === 'bulkOrderBanner')
                 if (bulkBlock) {
-                    bulkBlock.title = bulkOrderGlobal.title
-                    bulkBlock.highlightText = bulkOrderGlobal.highlightText
-                    bulkBlock.description = bulkOrderGlobal.description
-                    bulkBlock.image = bulkOrderGlobal.image
-                    bulkBlock.links = bulkOrderGlobal.links
+                    bulkBlock.title = allBannersGlobal.bulkOrder.title
+                    bulkBlock.highlightText = allBannersGlobal.bulkOrder.highlightText
+                    bulkBlock.description = allBannersGlobal.bulkOrder.description
+                    bulkBlock.image = allBannersGlobal.bulkOrder.image
+                    bulkBlock.links = allBannersGlobal.bulkOrder.links
                 }
             }
 
-            // 3. Fetch Home Hero Global and inject into hero
-            const homeHeroGlobal = await (payload as any).findGlobal({
-                slug: 'home-hero',
-            })
-
-            if (homeHeroGlobal && homePage?.hero) {
+            // 3. Use Home Hero from All Banners
+            if (allBannersGlobal?.homeHero && homePage?.hero) {
+                const homeHero = allBannersGlobal.homeHero
                 homePage.hero.type = 'banner'
 
                 let slideRichText = null;
-                if (homeHeroGlobal.title) {
+                if (homeHero.title) {
                     slideRichText = {
                         root: {
                             type: 'root',
@@ -72,7 +69,7 @@ export default async function HomePage() {
                                 {
                                     type: 'heading',
                                     tag: 'h1',
-                                    children: [{ type: 'text', version: 1, text: homeHeroGlobal.title }],
+                                    children: [{ type: 'text', version: 1, text: homeHero.title }],
                                     version: 1,
                                 },
                             ],
@@ -83,11 +80,11 @@ export default async function HomePage() {
 
                 homePage.hero.slides = [
                     {
-                        title: homeHeroGlobal.title,
-                        subTitle: homeHeroGlobal.subTitle,
-                        image: homeHeroGlobal.image,
-                        links: homeHeroGlobal.links,
-                        contentAlignment: homeHeroGlobal.contentAlignment || 'left',
+                        title: homeHero.title,
+                        subTitle: homeHero.subTitle,
+                        image: homeHero.image,
+                        links: homeHero.links,
+                        contentAlignment: homeHero.contentAlignment || 'left',
                         richText: slideRichText,
                     }
                 ]

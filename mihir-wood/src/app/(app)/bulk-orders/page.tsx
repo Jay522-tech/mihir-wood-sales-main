@@ -35,10 +35,40 @@ const queryPage = async (slug: string) => {
     return result.docs?.[0] || null
 }
 
+import { defaultBulkOrdersPage } from '../page-fallback'
+
 const Page = async () => {
+    const payload = await getPayload({ config: configPromise })
     let page = await queryPage('bulk') // Try 'bulk' slug from DB
     if (!page) {
         page = await queryPage('bulk-orders') // Fallback to 'bulk-orders'
+    }
+
+    if (!page) {
+        // Use fallback if page not found in DB
+        page = JSON.parse(JSON.stringify(defaultBulkOrdersPage)) as any
+
+        try {
+            const allBannersGlobal = await (payload as any).findGlobal({
+                slug: 'all-banners',
+            })
+
+            if (allBannersGlobal?.bulkOrder && page?.hero) {
+                const bulkHero = allBannersGlobal.bulkOrder
+                page.hero.type = 'banner'
+                page.hero.slides = [
+                    {
+                        title: bulkHero.title,
+                        subTitle: bulkHero.subTitle || 'PREMIUM FURNITURE FOR EVERY SPACE',
+                        image: bulkHero.image,
+                        links: bulkHero.links,
+                        contentAlignment: 'center',
+                    }
+                ]
+            }
+        } catch (error) {
+            console.error('Failed to fetch all-banners for bulk-orders fallback:', error)
+        }
     }
 
     if (!page) {

@@ -64,14 +64,40 @@ export const formatProductMessage = (product: any, baseMessage?: string) => {
     return message
 }
 
-export const formatBespokeMessage = (details: { category: string; style: string; textures: string }) => {
-    let message = `Hello, I'm interested in a bespoke/custom furniture design.\n\n`
-    message += `*Category:* ${details.category}\n`
-    message += `*Style:* ${details.style}\n`
-    if (details.textures) {
-        message += `*Requirements:* ${details.textures}\n`
+export const formatBespokeMessage = (details: Record<string, any>, steps?: any[]) => {
+    let message = `*PROJECT INQUIRY: BESPOKE DESIGN*\n`
+    message += `--------------------------------\n\n`
+
+    if (details.name) message += `*Customer:* ${details.name}\n`
+    if (details.phone) message += `*Phone:* ${details.phone}\n`
+    if (details.email) message += `*Email:* ${details.email}\n`
+
+    message += `\n*Project Details:*\n`
+
+    if (steps && steps.length > 0) {
+        steps.forEach((s: any) => {
+            const val = details[s.stepName] || details[s.stepName.toLowerCase()]
+            if (val) {
+                message += `• *${s.stepName}:* ${val}\n`
+            }
+        })
+    } else {
+        // Fallback for old static structure
+        if (details.category) message += `• *Project:* ${details.category}\n`
+        if (details.style) message += `• *Style:* ${details.style}\n`
+        if (details.budget) message += `• *Budget:* ${details.budget}\n`
+        if (details.timeline) message += `• *Timeline:* ${details.timeline}\n`
     }
-    message += `\nPlease let me know the process for consultation. Thank you!`
+
+    if (details.units && details.units !== '1') message += `• *Scale:* ${details.units} Units\n`
+    if (details.location) message += `• *Location:* ${details.location}\n`
+
+    if (details.message) {
+        message += `\n*Additional Requirements:*\n${details.message}\n`
+    }
+
+    message += `\n--------------------------------\n`
+    message += `_Sent via Mihir Wood Bespoke Design Portal_`
 
     return message
 }

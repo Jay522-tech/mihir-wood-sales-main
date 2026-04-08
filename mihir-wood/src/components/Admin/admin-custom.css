@@ -1,0 +1,152 @@
+/* Admin Custom Branding and Design refinements */
+
+:root {
+    /* Brand color: Warm Wood / Gold #D4BC9B */
+    --theme-brand: #D4BC9B;
+}
+
+/* Hiding the default Payload logo on login page */
+.template-login #Logo,
+.template-login img[alt="Payload Logo"],
+.template-login header svg {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+}
+
+/* Custom logo sizing for login page */
+.template-login .admin-logo {
+    display: none !important;
+}
+
+.template-login .custom-login-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Customizing the login page */
+body.template-login {
+    background: #0a0a0a !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.template-login main {
+    background: transparent !important;
+}
+
+.template-login form {
+    background: #141414 !important;
+    padding: 3rem !important;
+    border-radius: 16px !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    width: 100% !important;
+    max-width: 480px !important;
+}
+
+.template-login .field-type {
+    margin-bottom: 2rem !important;
+}
+
+.template-login label {
+    color: #e0e0e0 !important;
+    font-size: 11px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.15em !important;
+    margin-bottom: 0.75rem !important;
+    font-weight: 700 !important;
+    display: block !important;
+}
+
+.template-login input {
+    background: #1e1e1e !important;
+    border: 1px solid #333 !important;
+    color: white !important;
+    padding: 14px 18px !important;
+    border-radius: 8px !important;
+    font-size: 15px !important;
+    width: 100% !important;
+    transition: all 0.2s ease !important;
+}
+
+.template-login input:focus {
+    border-color: var(--theme-brand) !important;
+    background: #252525 !important;
+    outline: none !important;
+}
+
+.template-login .btn--style-primary {
+    background-color: var(--theme-brand) !important;
+    color: #000 !important;
+    font-weight: 800 !important;
+    border-radius: 10px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.2em !important;
+    padding: 16px !important;
+    margin-top: 1.5rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    cursor: pointer !important;
+    border: none !important;
+}
+
+.template-login .btn--style-primary:hover {
+    background-color: #e5cdad !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 20px rgba(212, 188, 155, 0.2) !important;
+}
+
+/* Dashboard refinements */
+.dashboard .welcome-block h1 {
+    color: var(--theme-brand) !important;
+}
+
+/* Sidebar refinements */
+.nav {
+    background-color: #0a0a0a !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.03) !important;
+}
+
+.nav__group-label {
+    color: var(--theme-brand) !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    font-size: 10px !important;
+    letter-spacing: 0.25em !important;
+    margin-top: 2.5rem !important;
+    opacity: 0.8;
+}
+
+.nav__link {
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    margin: 4px 12px !important;
+    transition: all 0.2s ease !important;
+    color: #bbb !important;
+}
+
+.nav__link:hover {
+    background-color: rgba(212, 188, 155, 0.06) !important;
+    color: var(--theme-brand) !important;
+}
+
+.nav__link--active {
+    background-color: rgba(212, 188, 155, 0.12) !important;
+    color: var(--theme-brand) !important;
+    font-weight: 600 !important;
+}
+
+/* Sidebar Logo override */
+.nav #Logo img,
+.nav img[alt="Payload Logo"],
+.nav .admin-logo {
+    height: 24px !important;
+    width: auto !important;
+    filter: brightness(0) invert(1) !important;
+}

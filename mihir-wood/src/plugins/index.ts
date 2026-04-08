@@ -108,9 +108,22 @@ export const plugins: Plugin[] = [
     customers: {
       slug: 'users',
     },
+    carts: {
+      cartsCollectionOverride: ({ defaultCollection }) => ({
+        ...defaultCollection,
+        admin: {
+          ...defaultCollection.admin,
+          hidden: true,
+        },
+      }),
+    },
     orders: {
       ordersCollectionOverride: ({ defaultCollection }) => ({
         ...defaultCollection,
+        admin: {
+          ...defaultCollection.admin,
+          hidden: true,
+        },
         fields: [
           ...defaultCollection.fields,
           {
@@ -134,6 +147,15 @@ export const plugins: Plugin[] = [
             },
           },
         ],
+      }),
+    },
+    transactions: {
+      transactionsCollectionOverride: ({ defaultCollection }) => ({
+        ...defaultCollection,
+        admin: {
+          ...defaultCollection.admin,
+          hidden: true,
+        },
       }),
     },
     payments: {

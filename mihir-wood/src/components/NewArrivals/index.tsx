@@ -41,7 +41,7 @@ export const NewArrivals: React.FC<{ products?: Product[] }> = ({ products }) =>
                     NEW ARRIVALS - SEASON 2026
                 </h2>
 
-                <div className="relative max-w-5xl mx-auto group">
+                <div className="relative max-w-5xl mx-auto">
                     <Carousel
                         setApi={setApi}
                         opts={{
@@ -57,8 +57,8 @@ export const NewArrivals: React.FC<{ products?: Product[] }> = ({ products }) =>
 
                                 return (
                                     <CarouselItem key={product.id} className="pl-4 md:pl-8 basis-full sm:basis-1/2 md:basis-1/3">
-                                        <Link href={`/products/${product.slug}`} className="flex flex-col items-center gap-5 group/card">
-                                            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 transition-all group-hover/card:shadow-md">
+                                        <Link href={`/products/${product.slug}`} className="flex flex-col items-center gap-5 group">
+                                            <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 transition-all group-hover:shadow-md">
                                                 {/* Subtle pattern background as seen in design */}
                                                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
                                                     style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
@@ -67,7 +67,7 @@ export const NewArrivals: React.FC<{ products?: Product[] }> = ({ products }) =>
                                                     src={image?.url || '/images/placeholder.png'}
                                                     alt={product.title}
                                                     fill
-                                                    className="object-cover transition-transform duration-500 group-hover/card:scale-105"
+                                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                                                 />
                                             </div>
 

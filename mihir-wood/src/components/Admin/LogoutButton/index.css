@@ -1,0 +1,40 @@
+.custom-logout-container {
+
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 1rem;
+}
+
+.custom-logout-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #909090 !important;
+    text-decoration: none !important;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.custom-logout-link:hover {
+    background-color: rgba(235, 77, 75, 0.08);
+    color: #eb4d4b !important;
+}
+
+.custom-logout-link:hover .custom-logout-icon {
+    transform: translateX(2px);
+}
+
+.custom-logout-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.custom-logout-label {
+    letter-spacing: 0.2px;
+}

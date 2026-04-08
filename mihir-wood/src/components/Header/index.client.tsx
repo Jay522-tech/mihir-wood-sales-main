@@ -60,8 +60,11 @@ export function HeaderClient({ header, categoryTree }: Props) {
               width={440}
               height={250}
               className={cn(
-                "h-14 md:h-16 w-auto object-contain transition-transform group-hover:scale-[2.4] -my-6 origin-left transition-all duration-300",
-                isSearchOpen ? "scale-[1.2] md:scale-[1.5]" : "scale-[2.2]"
+                "h-12 md:h-16 w-auto object-contain transition-transform origin-left transition-all duration-300",
+                isSearchOpen
+                  ? "scale-[1.5] md:scale-[1.8] group-hover:scale-[1.6] md:group-hover:scale-[1.9]"
+                  : "scale-[2.0] md:scale-[2.4] group-hover:scale-[2.2] md:group-hover:scale-[2.6]",
+                "-my-4 md:-my-6"
               )}
               priority
             />

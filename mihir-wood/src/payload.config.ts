@@ -25,8 +25,7 @@ import { Inquiries } from '@/collections/Inquiries'
 import { Footer } from '@/globals/Footer'
 import { Header } from '@/globals/Header'
 import { Shop } from '@/globals/Shop'
-import { BulkOrder } from '@/globals/BulkOrder'
-import { HomeHero } from '@/globals/HomeHero'
+import { AllBanners } from '@/globals/AllBanners'
 import { WhatsApp } from '@/globals/WhatsApp'
 import { Contact } from '@/globals/Contact'
 import { plugins } from './plugins'
@@ -43,6 +42,11 @@ export default buildConfig({
       // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
       beforeDashboard: ['@/components/BeforeDashboard#BeforeDashboard'],
+      afterNavLinks: ['@/components/Admin/LogoutButton#LogoutButton'],
+      graphics: {
+        Icon: '@/components/Logo/Icon#Icon',
+        Logo: '@/components/Logo/Logo#Logo',
+      },
     },
     user: Users.slug,
   },
@@ -87,7 +91,7 @@ export default buildConfig({
   }),
   //email: nodemailerAdapter(),
   endpoints: [],
-  globals: [Header, Footer, Shop, BulkOrder, HomeHero, WhatsApp, Contact],
+  globals: [Header, Footer, Shop, AllBanners, WhatsApp, Contact],
   plugins,
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

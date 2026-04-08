@@ -16,7 +16,7 @@ export const FAQBlockComponent: React.FC<any> = ({ title, description, questions
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
                     {/* Left side: Heading */}
                     <div className="lg:col-span-4 space-y-4">
-                        <h2 className="text-2xl font-medium tracking-tight uppercase text-gray-900 border-b border-[#D4BC9B] pb-8 w-max">
+                        <h2 className="text-xl sm:text-2xl font-medium tracking-tight uppercase text-gray-900 border-b border-[#D4BC9B] pb-8">
                             {title}
                         </h2>
                         {description && (

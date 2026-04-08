@@ -140,8 +140,7 @@ export interface Config {
     header: Header;
     footer: Footer;
     shop: Shop;
-    'bulk-order': BulkOrder;
-    'home-hero': HomeHero;
+    'all-banners': AllBanner;
     whatsapp: Whatsapp;
     contact: Contact;
   };
@@ -149,8 +148,7 @@ export interface Config {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     shop: ShopSelect<false> | ShopSelect<true>;
-    'bulk-order': BulkOrderSelect<false> | BulkOrderSelect<true>;
-    'home-hero': HomeHeroSelect<false> | HomeHeroSelect<true>;
+    'all-banners': AllBannersSelect<false> | AllBannersSelect<true>;
     whatsapp: WhatsappSelect<false> | WhatsappSelect<true>;
     contact: ContactSelect<false> | ContactSelect<true>;
   };
@@ -1198,21 +1196,71 @@ export interface CategoryCirclesBlock {
  */
 export interface CustomFurnitureBlock {
   title?: string | null;
-  mainImage?: (string | null) | Media;
-  samples?:
-    | {
-        image: string | Media;
-        id?: string | null;
-      }[]
-    | null;
   formTitle?: string | null;
   formSubtitle?: string | null;
-  categories?: (string | Category)[] | null;
-  styles?:
-    | {
-        label: string;
-        id?: string | null;
-      }[]
+  steps?:
+    | (
+        | {
+            /**
+             * Internal name for this step (e.g. Category, Style)
+             */
+            stepName: string;
+            stepTitle: string;
+            stepSubtitle?: string | null;
+            options?:
+              | {
+                  label: string;
+                  subLabel?: string | null;
+                  icon?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'iconGrid';
+          }
+        | {
+            /**
+             * Internal name for this step (e.g. Budget, Timeline)
+             */
+            stepName: string;
+            stepTitle: string;
+            stepSubtitle?: string | null;
+            options?:
+              | {
+                  label: string;
+                  subLabel?: string | null;
+                  icon?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'listSelection';
+          }
+        | {
+            /**
+             * Internal name (e.g. Scale, Units)
+             */
+            stepName: string;
+            stepTitle: string;
+            stepSubtitle?: string | null;
+            suffix?: string | null;
+            min?: number | null;
+            max?: number | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'rangeSlider';
+          }
+        | {
+            stepName: string;
+            stepTitle: string;
+            stepSubtitle?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'contactForm';
+          }
+      )[]
     | null;
   id?: string | null;
   blockName?: string | null;
@@ -2272,21 +2320,66 @@ export interface CategoryCirclesBlockSelect<T extends boolean = true> {
  */
 export interface CustomFurnitureBlockSelect<T extends boolean = true> {
   title?: T;
-  mainImage?: T;
-  samples?:
-    | T
-    | {
-        image?: T;
-        id?: T;
-      };
   formTitle?: T;
   formSubtitle?: T;
-  categories?: T;
-  styles?:
+  steps?:
     | T
     | {
-        label?: T;
-        id?: T;
+        iconGrid?:
+          | T
+          | {
+              stepName?: T;
+              stepTitle?: T;
+              stepSubtitle?: T;
+              options?:
+                | T
+                | {
+                    label?: T;
+                    subLabel?: T;
+                    icon?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        listSelection?:
+          | T
+          | {
+              stepName?: T;
+              stepTitle?: T;
+              stepSubtitle?: T;
+              options?:
+                | T
+                | {
+                    label?: T;
+                    subLabel?: T;
+                    icon?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        rangeSlider?:
+          | T
+          | {
+              stepName?: T;
+              stepTitle?: T;
+              stepSubtitle?: T;
+              suffix?: T;
+              min?: T;
+              max?: T;
+              id?: T;
+              blockName?: T;
+            };
+        contactForm?:
+          | T
+          | {
+              stepName?: T;
+              stepTitle?: T;
+              stepSubtitle?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   id?: T;
   blockName?: T;
@@ -3242,55 +3335,50 @@ export interface Shop {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "bulk-order".
+ * via the `definition` "all-banners".
  */
-export interface BulkOrder {
+export interface AllBanner {
   id: string;
-  title?: string | null;
-  highlightText?: string | null;
-  description?: string | null;
-  image: string | Media;
-  links?:
-    | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?: {
-            relationTo: 'pages';
-            value: string | Page;
-          } | null;
-          url?: string | null;
-          label: string;
-          /**
-           * Choose how the link should be rendered.
-           */
-          appearance?: ('default' | 'outline') | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "home-hero".
- */
-export interface HomeHero {
-  id: string;
-  contentAlignment?: ('left' | 'center' | 'right') | null;
-  title?: string | null;
-  subTitle?: string | null;
-  image: string | Media;
-  links?:
-    | {
-        link: {
-          label: string;
-          url: string;
-        };
-        id?: string | null;
-      }[]
-    | null;
+  homeHero: {
+    contentAlignment?: ('left' | 'center' | 'right') | null;
+    title?: string | null;
+    subTitle?: string | null;
+    image: string | Media;
+    links?:
+      | {
+          link: {
+            label: string;
+            url: string;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
+  bulkOrder: {
+    title?: string | null;
+    highlightText?: string | null;
+    description?: string | null;
+    image: string | Media;
+    links?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?: {
+              relationTo: 'pages';
+              value: string | Page;
+            } | null;
+            url?: string | null;
+            label: string;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'outline') | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3416,51 +3504,50 @@ export interface ShopSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "bulk-order_select".
+ * via the `definition` "all-banners_select".
  */
-export interface BulkOrderSelect<T extends boolean = true> {
-  title?: T;
-  highlightText?: T;
-  description?: T;
-  image?: T;
-  links?:
+export interface AllBannersSelect<T extends boolean = true> {
+  homeHero?:
     | T
     | {
-        link?:
+        contentAlignment?: T;
+        title?: T;
+        subTitle?: T;
+        image?: T;
+        links?:
           | T
           | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-              appearance?: T;
+              link?:
+                | T
+                | {
+                    label?: T;
+                    url?: T;
+                  };
+              id?: T;
             };
-        id?: T;
       };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "home-hero_select".
- */
-export interface HomeHeroSelect<T extends boolean = true> {
-  contentAlignment?: T;
-  title?: T;
-  subTitle?: T;
-  image?: T;
-  links?:
+  bulkOrder?:
     | T
     | {
-        link?:
+        title?: T;
+        highlightText?: T;
+        description?: T;
+        image?: T;
+        links?:
           | T
           | {
-              label?: T;
-              url?: T;
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    appearance?: T;
+                  };
+              id?: T;
             };
-        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
