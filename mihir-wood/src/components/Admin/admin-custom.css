@@ -16,7 +16,7 @@
     margin: 0 !important;
 }
 
-/* Custom logo sizing for login page */
+/* Hiding the custom logo on login page */
 .template-login .admin-logo {
     display: none !important;
 }

@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import '../Admin/admin-custom.css'
+import '../../components/Admin/admin-custom.css'
 
 export const BeforeLogin: React.FC = () => {
   return (

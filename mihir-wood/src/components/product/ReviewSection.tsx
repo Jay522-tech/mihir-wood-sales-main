@@ -95,7 +95,7 @@ export const ReviewSection: React.FC<Props> = ({ reviews, productId }) => {
                                     <span className="text-[10px] text-neutral-400 tracking-wider uppercase">{new Date(review.updatedAt).toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}</span>
                                 </div>
                             </div>
-                            <p className="text-sm text-neutral-600 leading-relaxed italic mb-4">"{review.content}"</p>
+                            <p className="text-sm text-neutral-600 leading-relaxed italic mb-4">&quot;{review.content}&quot;</p>
                             <ReviewMedia images={review.images || []} video={review.video} />
                         </div>
                     ))}
@@ -175,7 +175,7 @@ export const ReviewSection: React.FC<Props> = ({ reviews, productId }) => {
                                                 <span className="text-[10px] text-neutral-400 sm:ml-auto">{new Date(review.updatedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                                             </div>
                                         </div>
-                                        <p className="text-base text-neutral-700 leading-relaxed italic mb-6">"{review.content}"</p>
+                                        <p className="text-base text-neutral-700 leading-relaxed italic mb-6">&quot;{review.content}&quot;</p>
                                         <ReviewMedia images={review.images || []} video={review.video} />
                                     </div>
                                 ))}

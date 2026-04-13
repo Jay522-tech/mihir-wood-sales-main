@@ -38,7 +38,7 @@ export const InquirySection: React.FC = () => {
                                 </div>
                             </div>
                             <p className="text-gray-800 font-bold text-sm md:text-base leading-relaxed mb-4 italic">
-                                "Our custom teak bed is a masterpiece! The craftsmanship is truly world-class."
+                                &quot;Our custom teak bed is a masterpiece! The craftsmanship is truly world-class.&quot;
                             </p>
                             <div className="flex gap-1">
                                 {[...Array(5)].map((_, i) => (

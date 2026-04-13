@@ -4,11 +4,11 @@ import { getPayload } from 'payload'
 import React from 'react'
 import type { DefaultDocumentIDType } from 'payload'
 
-export const Reviews: React.FC<
-    ReviewsProps & {
+export const Reviews = async (
+    props: ReviewsProps & {
         id?: DefaultDocumentIDType
     }
-> = async (props) => {
+) => {
     const { id, populateBy, reviews: reviewsFromProps, title } = props
 
     let reviews: Review[] = []
@@ -25,9 +25,9 @@ export const Reviews: React.FC<
         reviews = fetchedReviews.docs
     } else {
         if (reviewsFromProps?.length) {
-            reviews = reviewsFromProps.map((review) => {
-                if (typeof review === 'object') return review
-            }).filter(Boolean) as Review[]
+            reviews = reviewsFromProps.filter(
+                (review) => typeof review === 'object' && review !== null
+            ) as Review[]
         }
     }
 
@@ -40,11 +40,11 @@ export const Reviews: React.FC<
                 {reviews.map((review, index) => (
                     <div className="rounded-xl border bg-white p-6 shadow-sm dark:bg-neutral-900" key={index}>
                         <div className="mb-4 flex items-center gap-4">
-                            {review.image && typeof review.image === 'object' && (
+                            {review.images?.[0] && typeof review.images[0] === 'object' && (
                                 <img
                                     alt={review.customerName}
                                     className="h-12 w-12 rounded-full object-cover"
-                                    src={(review.image as Media).url!}
+                                    src={(review.images[0] as Media).url!}
                                 />
                             )}
                             <div>
@@ -56,7 +56,7 @@ export const Reviews: React.FC<
                                 </div>
                             </div>
                         </div>
-                        <p className="italic text-neutral-600 dark:text-neutral-400">"{review.content}"</p>
+                        <p className="italic text-neutral-600 dark:text-neutral-400">&quot;{review.content}&quot;</p>
                     </div>
                 ))}
             </div>

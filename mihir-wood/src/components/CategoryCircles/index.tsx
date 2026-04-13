@@ -33,7 +33,7 @@ export const CategoryCircles: React.FC = () => {
                                     fill
                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                     className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                />LANY'S OFFRES GET DRY BULK ON CUSTOM BANNER
+                                />
                             </div>
                             <span className="text-xs md:text-sm font-bold text-gray-800 tracking-wide uppercase transition-colors group-hover:text-black">
                                 {category.label}

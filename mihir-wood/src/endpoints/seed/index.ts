@@ -93,7 +93,7 @@ export const seed = async ({
         slug: global,
         data: {
           navItems: [],
-        },
+        } as any,
         depth: 0,
         context: {
           disableRevalidate: true,
@@ -568,7 +568,7 @@ export const seed = async ({
             },
           },
         ],
-      },
+      } as any,
     }),
   ])
 

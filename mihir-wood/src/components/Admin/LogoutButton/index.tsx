@@ -1,10 +1,11 @@
 import React from 'react'
+import Link from 'next/link'
 import './index.css'
 
 export const LogoutButton: React.FC = () => {
     return (
         <div className="custom-logout-container">
-            <a href="/admin/logout" className="custom-logout-link">
+            <Link href="/admin/logout" className="custom-logout-link" prefetch={false}>
                 <span className="custom-logout-icon">
                     <svg
                         width="16"
@@ -22,7 +23,7 @@ export const LogoutButton: React.FC = () => {
                     </svg>
                 </span>
                 <span className="custom-logout-label">Log Out</span>
-            </a>
+            </Link>
         </div>
     )
 }
